@@ -12,14 +12,13 @@ function PackagesSlider() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        console.log("3");
-        api.get("http://127.0.0.1:8000/shop/getPackages/")
+        api.get("/shop/getPackages/")
             .then((res) => {
+                console.log(res)
                 setPackages(res.data);
                 setIsLoading(false);
             })
             .catch((err) => {
-                console.log(err);
                 setIsLoading(false);
             });
     }, []);

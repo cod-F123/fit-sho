@@ -30,9 +30,15 @@ function Home() {
                                 />
                             </Link>
                         </SwiperSlide>
-                        <SwiperSlide>Slide 2</SwiperSlide>
-                        <SwiperSlide>Slide 3</SwiperSlide>
-                        <SwiperSlide>Slide 4</SwiperSlide>
+                        <SwiperSlide>
+                            <Link>
+                                <img
+                                    src="https://getjoule.co/assets/images/slide/b7bca7eb45ed0c1f5c61b6f97d2fb7be.jpg"
+                                    alt="slide"
+                                />
+                            </Link>
+                        </SwiperSlide>
+                        
                     </Swiper>
                 </div>
                 <div className="col-span-12 grid grid-cols-12 gap-5 my-5">
@@ -78,6 +84,7 @@ function Home() {
                 </div>
                 
                 <PackagesSlider />
+                <br /><br />
                 <ProductSlider />
                 
             </div>

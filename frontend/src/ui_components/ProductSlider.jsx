@@ -12,14 +12,12 @@ function ProductSlider() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        console.log("3");
         api.get("/shop/getProducts")
             .then((res) => {
                 setProducts(res.data.products);
                 setIsLoading(false);
             })
             .catch((err) => {
-                console.log(err);
                 setIsLoading(false);
             });
     }, []);
@@ -38,7 +36,7 @@ function ProductSlider() {
                     }}
                     grabCursor={true}
                     
-                    loop={products.length > 3} 
+                    loop={false} 
                     className="w-full"
                 >
                     {products.map((product) => (

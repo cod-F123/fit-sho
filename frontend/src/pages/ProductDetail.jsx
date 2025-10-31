@@ -101,7 +101,8 @@ function ProductDetail() {
                                     <div className="">
                                         <img
                                             src={
-                                                "https://getjoule.co/assets/images/product_image/809356bd946b55a72a28338b42d528cc.jpg"
+                                                `${BASEURL}/${productData.image}` ||
+                                                "https://via.placeholder.com/300x200?text=No+Image"
                                             }
                                             alt={productData.name}
                                             loading="lazy"

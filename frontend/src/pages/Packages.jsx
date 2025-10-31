@@ -14,12 +14,9 @@ function Packages() {
                 setIsLoading(false);
             })
             .catch((err) => {
-                console.log(err);
                 setIsLoading(false);
             });
     }, []);
-
-    console.log(packages);
 
     return (
         <>

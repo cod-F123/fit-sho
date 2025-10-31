@@ -20,8 +20,11 @@ function Products() {
             })
             .catch((error) => {
                 setIsLoading(false);
+                console.log(error);
             });
     }, []);
+
+    console.log(products)
 
     const filterCategory = (cName) => {
         setCategorySelected(cName);
