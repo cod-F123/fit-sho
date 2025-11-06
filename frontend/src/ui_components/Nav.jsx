@@ -2,6 +2,10 @@ import { Link } from "react-router-dom";
 import { useState, useRef, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/images/logo2.jpg";
+import { CartContext } from "../contexts/CartContext";
+
+
 
 function Nav() {
     const [openMenu, setOpenMenu] = useState(false);
@@ -10,6 +14,8 @@ function Nav() {
     const onMenuAction = () => setOpenMenu(~openMenu);
 
     const { isLogin, logout } = useContext(AuthContext);
+
+    const {cartItems} = useContext(CartContext);
 
     const navigate = useNavigate();
 
@@ -26,18 +32,18 @@ function Nav() {
                             width="28"
                             height="28"
                             fill="currentColor"
-                            class="bi bi-list"
+                            className="bi bi-list"
                             viewBox="0 0 16 16"
                         >
                             <path
-                                fill-rule="evenodd"
+                                fillRule="evenodd"
                                 d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
                             />
                         </svg>
                     </div>
                     <div className="flex-row hidden md:flex items-center">
-                        <a
-                            href="#"
+                        <Link
+                            to="/cart"
                             className="rounded-md relative  bg-green-300 text-blue-950 p-2 md:p-1 lg:p-2"
                         >
                             <svg
@@ -54,9 +60,9 @@ function Nav() {
                                 className=" absolute right-0 rounded-xl font-bold bg-gray-400 px-2"
                                 style={{ top: "-8px", fontSize: "11px" }}
                             >
-                                0
+                                {cartItems.length}
                             </div>
-                        </a>
+                        </Link>
                         {!isLogin ? (
                             <>
                                 <Link
@@ -77,7 +83,7 @@ function Nav() {
                                         width="40"
                                         height="40"
                                         fill="currentColor"
-                                        class="bi bi-person"
+                                        className="bi bi-person"
                                         viewBox="0 0 16 16"
                                     >
                                         <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
@@ -90,8 +96,8 @@ function Nav() {
                 <div className="lg:col-span-9 md:col-span-8 col-span-2 flex flex-row-reverse justify-start items-center">
                     <a href="#" className="ml-3">
                         <img
-                            src="https://getjoule.co/assets/desktop/images1/logo@2x.png"
-                            className="w-30"
+                            src={logo}
+                            className="w-20"
                             alt="logo"
                         />
                     </a>
@@ -203,9 +209,9 @@ function Nav() {
                         </Link>
                     </li>
                     <li>
-                        <a
+                        <Link
                             onClick={onMenuAction}
-                            href="#"
+                            to="/cart"
                             className="rounded-md relative flex my-5 bg-green-300 text-blue-950 p-2 md:p-1 lg:p-2"
                         >
                             <svg
@@ -222,9 +228,9 @@ function Nav() {
                                 className=" absolute right-0 rounded-xl font-bold bg-gray-400 px-2"
                                 style={{ top: "-8px", fontSize: "11px" }}
                             >
-                                0
+                                {cartItems.length}
                             </div>
-                        </a>
+                        </Link>
                     </li>
                     <li>
                         {!isLogin ? (
@@ -249,7 +255,7 @@ function Nav() {
                                         width="40"
                                         height="40"
                                         fill="currentColor"
-                                        class="bi bi-person"
+                                        className="bi bi-person"
                                         viewBox="0 0 16 16"
                                     >
                                         <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />

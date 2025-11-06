@@ -8,6 +8,7 @@ function Products() {
     const [isLoading, setIsLoading] = useState(true);
     const [categorySelected, setCategorySelected] = useState("");
 
+
     useEffect(() => {
         api.get("/shop/getProducts/")
             .then((res) => {
@@ -20,11 +21,9 @@ function Products() {
             })
             .catch((error) => {
                 setIsLoading(false);
-                console.log(error);
+
             });
     }, []);
-
-    console.log(products)
 
     const filterCategory = (cName) => {
         setCategorySelected(cName);

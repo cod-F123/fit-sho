@@ -1,10 +1,12 @@
 from django.shortcuts import render , get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Package , Meal , Product , ProductCategory
-from .serializers import PackageSerializer , ProductSerializer , CategoryProductSerializer
+from rest_framework. permissions import IsAuthenticatedOrReadOnly
+from .models import Package , Meal , Product , ProductCategory , Comment
+from .serializers import PackageSerializer , ProductSerializer , CategoryProductSerializer , CommentSerializer
 from .filters import ProductFilter
-
+from django.contrib.contenttypes.models import ContentType
+from rest_framework import status
 # Create your views here.
 
 class GetPackages(APIView):
@@ -16,12 +18,33 @@ class GetPackages(APIView):
     
 
 class GetPackage(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly,]
     def get(self, reqeust, slug, format = None):
         data = get_object_or_404(Package, slug= slug)
         
         serializer = PackageSerializer(data)
         
         return Response(serializer.data)
+    
+    def post(self, request, slug, format=None):
+        
+        package = get_object_or_404(Package, slug=slug)
+        content_comment = request.data.get("comment_content",None)
+        
+        if content_comment is not None:
+            new_comment = Comment.objects.create(
+                author = request.user,
+                content = content_comment,
+                content_type = ContentType.objects.get_for_model(Package),
+                object_id = package.id
+            )
+            
+            serializer = PackageSerializer(instance=package)
+            
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+        
     
 
 class GetProductsAndCategories(APIView):
@@ -47,3 +70,23 @@ class GetProduct(APIView):
         serializer = ProductSerializer(product)
         
         return Response(serializer.data)
+    
+    def post(self, request, slug, format=None):
+
+        product = get_object_or_404(Product, slug=slug)
+        content_comment = request.data.get("comment_content",None)
+    
+        
+        if content_comment is not None:
+            new_comment = Comment.objects.create(
+                author = request.user,
+                content = content_comment,
+                content_type = ContentType.objects.get_for_model(Product),
+                object_id = product.id
+            )
+            
+            serializer = ProductSerializer(instance = product)
+            
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response({"message":"comment content required"},status=status.HTTP_400_BAD_REQUEST)

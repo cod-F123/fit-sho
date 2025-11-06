@@ -14,7 +14,7 @@ function PackagesSlider() {
     useEffect(() => {
         api.get("/shop/getPackages/")
             .then((res) => {
-                console.log(res)
+ 
                 setPackages(res.data);
                 setIsLoading(false);
             })

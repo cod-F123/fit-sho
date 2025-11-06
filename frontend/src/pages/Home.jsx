@@ -11,7 +11,7 @@ import ProductSlider from "../ui_components/ProductSlider";
 function Home() {
     return (
         <>
-            <div className="grid grid-cols-12 mx-2 md:mx-20 my-4">
+            <div className="grid grid-cols-12 mx-2 md:mx-20 my-4 mt-7">
                 <div className="col-span-12 mt-5">
                     <Swiper
                         pagination={{

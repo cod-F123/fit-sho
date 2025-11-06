@@ -37,10 +37,11 @@ function Register() {
                 setIsLogin(true);
                 navigate("/accounts/validate");
                 setIsLoading(false);
+                setAlert("ثبت نام با موفقیت انجام شد لطفا کد ارسال شده را وارد کنید");
             })
             .catch((error) => {
                 setAlert("اطلاعات را به درستی وارد کنید");
-                isLoading(false);
+                setIsLoading(false);
             });
     };
 

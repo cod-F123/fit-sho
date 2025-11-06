@@ -10,14 +10,14 @@ const AlertContext = createContext();
 
 function AppLayout() {
 
-    const [alert,setAlert] = useState(null)
+    const [alertMessage,setAlert] = useState(null)
 
     return (
         <>  
-        <AlertContext.Provider value={{setAlert}}>
+        <AlertContext.Provider value={{alertMessage,setAlert}}>
             <main className="min-h-screen selection:text-white selection:bg-black  z-0 flex flex-col w-full relative">
                 <Nav />
-                {alert && <Alert message={alert} />}
+                {alertMessage && <Alert message={alertMessage} />}
                 <div className="mt-20 ">
                     <Outlet />
                 </div>

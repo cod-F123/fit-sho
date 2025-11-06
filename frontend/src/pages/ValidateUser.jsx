@@ -43,23 +43,21 @@ function ValidateUser() {
 
             setAlert(res.data.message || "شماره شما با موفقیت تأیید شد ✅");
 
-            // کمی تأخیر برای نمایش alert
             navigate("/");
         } catch (error) {
             console.log(error);
 
-            const errMsg =
-                error?.response?.data?.message ||
-                "مشکلی در اعتبارسنجی کد پیش آمد. لطفاً دوباره تلاش کنید.";
-
+            const errMsg = error?.response?.data?.message || "مشکلی در اعتبارسنجی کد پیش آمد. لطفاً دوباره تلاش کنید." ;
+            console.log(errMsg)
             setAlert(errMsg);
+            alert(errMsg)
         } finally {
             setIsLoading(false);
         }
     };
 
     useEffect(() => {
-        if (user["is_validate"] == true) {
+        if (user["is_validate"]) {
             navigate("/");
         }
     }, []);

@@ -1,11 +1,29 @@
 from rest_framework import serializers
-from .models import User
+from .models import User , Profile
+
+
+
 
 class UserViewSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ["phone","first_name","last_name","is_validate"]
+        fields = ["phone","first_name","last_name","is_validate","get_full_name"]
+        
+
+class ProfileSeializer(serializers.ModelSerializer):
+    user = UserViewSerializer(read_only = True)
+    
+    class Meta:
+        model = Profile
+        fields = "__all__"
+        
+        
+        
+class UserProfileUpdate(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ["is_male","height","weight","bmi","body_category"]
         
         
 class RegisterUserSerializer(serializers.ModelSerializer):

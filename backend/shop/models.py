@@ -1,7 +1,10 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth import get_user_model
 import random
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey , GenericRelation
 
 
 # Create your models here.
@@ -42,6 +45,9 @@ class Package(models.Model):
         verbose_name="ترکیبات و جزئیات بسته",
         blank=True,
         help_text="توضیح درباره‌ی مواد تشکیل‌دهنده، نوع غذاها، و اهداف سلامتی بسته")
+    
+    comments = GenericRelation("Comment", related_query_name="package_comments")
+
     
     
     def save(self, *args, **kwargs):
@@ -135,6 +141,8 @@ class Product(models.Model):
     
     price = models.DecimalField(verbose_name="قیمت", decimal_places=0, max_digits=12)
     
+    comments = GenericRelation("Comment", related_query_name="product_comments")
+    
     
     def save(self, *args, **kwargs):
         
@@ -162,5 +170,23 @@ class ExtraOptionProduct(models.Model):
     def __str__(self):
         return self.option
     
+
+
+class Comment(models.Model):
+    
+    content_type = models.ForeignKey(ContentType , on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type','object_id')
+    
+    content = models.TextField()
+    author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"کامنت توسط {self.author} برای {self.content_object}"
+
+    class Meta:
+        ordering = ["-created_at"]
 
     

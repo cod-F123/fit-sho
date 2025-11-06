@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import (Category , Package , Meal , ExtraOptionPackage , MealPriceWeek,
-                     Product, ProductCategory , ExtraOptionProduct) 
+                     Product, ProductCategory , ExtraOptionProduct, Comment) 
 
 # Register your models here.
 
@@ -47,7 +47,7 @@ class ExtraOptionProductAdminInline(admin.StackedInline):
     verbose_name_plural = "آپشن های اضافه"
     model = ExtraOptionProduct
     extra = 0
-    
+
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -55,4 +55,9 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ["name","category__name"]
     list_filter = ["category__name","is_exist"]
     
-    inlines = [ExtraOptionProductAdminInline,]
+    inlines = [ExtraOptionProductAdminInline]
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ["object_id","author__phone","content_type"]
+    search_fields = ["object_id","author__phone",]

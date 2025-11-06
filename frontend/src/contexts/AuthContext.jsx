@@ -10,16 +10,15 @@ export const AuthProvider = ({children})=>{
 
 
     useEffect(()=>{
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("access");
 
         if(token){
             api.get("/accounts/",{
                 headers : {
-                    Authorization : `Bearer ${token}`,
                     "Content-Type" : "application/json"
                 },
             }).then((res)=>{
-                console.log(res);
+
                 setUser(res.data);
                 setIsLogin(true);
                 setIsLoading(false);
@@ -27,8 +26,8 @@ export const AuthProvider = ({children})=>{
                 setUser(null);
                 setIsLogin(false);
                 localStorage.removeItem("token");
-                setIsLoading(true);
-                console.log(error)
+                setIsLoading(false);
+
             })
         }else{
             setIsLoading(false);

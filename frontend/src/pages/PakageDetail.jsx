@@ -1,8 +1,12 @@
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import api, { BASEURL } from "../service/api";
 import CommentCard from "../ui_components/CommentCard";
+import { AuthContext } from "../contexts/AuthContext";
+import CommentForm from "../ui_components/CommentForm";
+import { AlertContext } from "../ui_components/AppLayout";
+import { CartContext } from "../contexts/CartContext";
 
 function PackageDetail() {
     const [isLoading, setIsLoading] = useState(true);
@@ -25,9 +29,20 @@ function PackageDetail() {
         "تخم مرغ",
     ];
 
+    const { user, isLogin } = useContext(AuthContext);
+    const [commentForm, setCommentForm] = useState({});
+
+    const { setAlert } = useContext(AlertContext);
+
     const [allergiesSelected, setAllergiesSelected] = useState([]);
 
     const [extraOptions, setExtraOptions] = useState([]);
+
+    const { addToCart, existProductInCart, removeFromCart} = useContext(CartContext);
+
+    const navigate = useNavigate();
+
+    const [text,setText] = useState("");
 
     useEffect(() => {
         api.get(`/shop/getPackage/${params.id}/`)
@@ -39,12 +54,16 @@ function PackageDetail() {
                 setActiveMeal(res.data.meals[0] ? res.data.meals[0].id : null);
 
                 setSelectedWeek(
-                    res.data.meals && res.data.meals[0] && res.data.meals[0].pricing_week
+                    res.data.meals &&
+                        res.data.meals[0] &&
+                        res.data.meals[0].pricing_week
                         ? res.data.meals[0].pricing_week[0].id
                         : null
                 );
                 setPrice(
-                    res.data.meals && res.data.meals[0] && res.data.meals[0].pricing_week
+                    res.data.meals &&
+                        res.data.meals[0] &&
+                        res.data.meals[0].pricing_week
                         ? res.data.meals[0].pricing_week[0].price
                         : 0
                 );
@@ -52,7 +71,7 @@ function PackageDetail() {
                 setIsLoading(false);
             })
             .catch((err) => {
-                setIsLoading(true);
+                navigate("/404");
             });
     }, []);
 
@@ -74,7 +93,6 @@ function PackageDetail() {
 
     const setExtraOption = (id, price) => {
         if (!extraOptions.includes(id)) {
-
             let weeks = 1;
 
             for (let i of packageData.meals) {
@@ -87,11 +105,12 @@ function PackageDetail() {
                 }
             }
 
-            setPrice((prevPrice)=> Number(prevPrice) + weeks*Number(price))
+            setPrice((prevPrice) => Number(prevPrice) + weeks * Number(price));
 
             setExtraOptions((prev) => [...prev, id]);
         }
     };
+
 
     const removeExtraOption = (id, price) => {
         if (extraOptions.includes(id)) {
@@ -107,7 +126,7 @@ function PackageDetail() {
                 }
             }
 
-            setPrice((prevPrice)=> Number(prevPrice) - weeks*Number(price))
+            setPrice((prevPrice) => Number(prevPrice) - weeks * Number(price));
 
             setExtraOptions((prev) => prev.filter((item) => item !== id));
         }
@@ -127,6 +146,45 @@ function PackageDetail() {
         setPrice(total);
     };
 
+    const setActiveMealAndWeek = (mealId)=>{
+
+        const selectedMeal = packageData.meals.filter((item)=>item.id == mealId)[0]
+        setActiveMeal(selectedMeal.id);
+
+        setSelectedWeek(selectedMeal.pricing_week[0].id);
+
+        setTotalPrice(selectedMeal.pricing_week[0].id,selectedMeal.pricing_week[0].price,selectedMeal.pricing_week[0].week_duration)
+    };
+
+    const onChangeCommentInput = (e) => {
+        setText(e.target.value);
+        setCommentForm((prev) => ({
+            ...prev,
+            [e.target.name]: e.target.value,
+        }));
+    };
+
+    const onSubmitCommentForm = () => {
+        if (commentForm.comment_content) {
+            const token = localStorage.getItem("token");
+            setText("");
+            api.post(`/shop/getPackage/${params.id}/`, commentForm, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => {
+                    setAlert("نظر شما ثیت شد");
+                    setPackageData(res.data);
+                })
+                .catch((error) => {
+                    setAlert("مشکلی پیش آمدد دقایقی دیگر انتحان کنید");
+                })
+                .finally(() => {
+                    setCommentForm({});
+                });
+        }
+    };
 
     return (
         <>
@@ -136,7 +194,7 @@ function PackageDetail() {
                 </div>
             ) : (
                 <>
-                    <div className="title w-full px-7 sm:px-11 lg:px-20 pb-5 pt-8">
+                    <div className="title w-full px-7 sm:px-11 lg:px-20 pb-5 mt-5 pt-8">
                         <h1 className="w-full text-right text-lg font-bold">
                             بسته هفتگی {packageData.name}
                         </h1>
@@ -360,23 +418,46 @@ function PackageDetail() {
                                     <p className="text-right font-bold">
                                         نظرات شما
                                     </p>
-                                    <p className="text-right mt-4 text-sm">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="22"
-                                            height="22"
-                                            fill="currentColor"
-                                            className="bi bi-bell-fill inline ml-3"
-                                            viewBox="0 0 16 16"
-                                        >
-                                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901" />
-                                        </svg>
-                                        برای ثبت نظر خود در سایت می بایست ابتدا
-                                        عضو سایت شوید و اگر قبلا ثبت نام نموده
-                                        اید در سایت وارد شوید .
-                                    </p>
+                                    {isLogin ? (
+                                        <>
+                                            <CommentForm
+                                                onSubmit={onSubmitCommentForm}
+                                                onChangeInput={
+                                                    onChangeCommentInput
+                                                }
+
+                                                text={text}
+                                            />
+                                        </>
+                                    ) : (
+                                        <>
+                                            <p className="text-right mt-4 text-sm">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="22"
+                                                    height="22"
+                                                    fill="currentColor"
+                                                    className="bi bi-bell-fill inline ml-3"
+                                                    viewBox="0 0 16 16"
+                                                >
+                                                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901" />
+                                                </svg>
+                                                برای ثبت نظر خود در سایت می
+                                                بایست ابتدا عضو سایت شوید و اگر
+                                                قبلا ثبت نام نموده اید در سایت
+                                                وارد شوید .
+                                            </p>
+                                        </>
+                                    )}
                                     <div className="grid grid-cols-6 mt-5">
-                                        <CommentCard />
+                                        {packageData.comments.map((comment) => {
+                                            return (
+                                                <CommentCard
+                                                    commentData={comment}
+                                                    key={comment.id}
+                                                />
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             </div>
@@ -395,7 +476,7 @@ function PackageDetail() {
                                                 <div
                                                     key={meal.id}
                                                     onClick={() =>
-                                                        setActiveMeal(meal.id)
+                                                        setActiveMealAndWeek(meal.id)
                                                     }
                                                     className={`col-span-6 cursor-pointer rounded-md border-2 flex flex-col justify-center items-center py-6 font-medium text-sm transition-all
                                 ${
@@ -571,7 +652,7 @@ function PackageDetail() {
                                     </div>
                                 </div>
 
-                                <div className="flex mt-5 flex-row  items-center justify-between p-2 md:p-5 rounded-md bg-white">
+                                <div className="flex mt-5 flex-row  items-center justify-between p-3 md:p-5 rounded-md bg-white">
                                     <span className="text-sm font-bold">
                                         جمع مبلغ پرداختی
                                     </span>
@@ -581,7 +662,33 @@ function PackageDetail() {
                                 </div>
 
                                 <div className="flex mt-5 flex-row  items-center justify-center p-2 md:p-5 rounded-md bg-white">
-                                    <button className="bg-green-500 w-full text-white px-4 py-4 rounded-md cursor-pointer transition-all ease-in border-2 duration-150 hover:shadow-md border-green-500 hover:bg-white hover:text-green-500">افزودن به سبد خرید</button>
+                                    {existProductInCart(packageData.slug) ? (
+                                        <>
+                                            <button onClick={()=>{removeFromCart(packageData.slug)}} className="bg-red-500 w-full text-white px-4 py-4 rounded-md cursor-pointer transition-all ease-in border-2 duration-150 hover:shadow-md border-red-500 hover:bg-white hover:text-red-500">
+                                                حذف از سبد خرید
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <button
+                                                onClick={() => {
+                                                    addToCart(
+                                                        packageData,
+                                                        1,
+                                                        price,
+                                                        true,
+                                                        extraOptions,
+                                                        allergiesSelected,
+                                                        activeMeal,
+                                                        selectedWeek,
+                                                    );
+                                                }}
+                                                className="bg-green-500 w-full text-white px-4 py-4 rounded-md cursor-pointer transition-all ease-in border-2 duration-150 hover:shadow-md border-green-500 hover:bg-white hover:text-green-500"
+                                            >
+                                                افزودن به سبد خرید
+                                            </button>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         </div>

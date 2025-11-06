@@ -76,22 +76,25 @@
     }
 }
 
-
-
-.font-sm{
+.font-sm {
     font-size: 13px !important;
 }
 
-.bannerSlider .swiper-button-prev , .bannerSlider .swiper-button-next {
+.bannerSlider .swiper-button-prev,
+.bannerSlider .swiper-button-next {
     width: 18px !important;
     color: gray;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.max-h-content {
+    height: max-content !important;
 }

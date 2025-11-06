@@ -1,4 +1,4 @@
-function CommentCard() {
+function CommentCard({commentData}) {
     return (
         <>
             <div className="col-span-6 p-2 md:p-4 mb-5 bg-white rounded-md">
@@ -9,13 +9,11 @@ function CommentCard() {
                         alt="imgAuthor"
                     />
                     <span className="font-sm font-medium mr-3">
-                        آرزو علی زاده
+                        {commentData.author.first_name} {commentData.author.last_name}
                     </span>
                 </div>
                 <p className="text-right mt-3 text-sm ">
-                    بسته دیتاکس خیلی خوب بود و نتیجه هم راضی کننده بود رسیدم به
-                    53.700، البته من تحرک خاصی نداشتم ، اگر ورزش میکردم قطعا
-                    نتیجه بهتر هم میشد
+                    {commentData.content}
                 </p>
             </div>
         </>

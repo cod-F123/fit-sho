@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import logo from "../assets/images/logo.png";
 
 function Footer() {
     return (
@@ -6,15 +7,15 @@ function Footer() {
             <div className="flex w-full items-center flex-col bg-gray-100 pt-10">
                 <div className="grid grid-cols-12 mb-10 gap-6 px-5" dir="rtl">
                     <div className="lg:col-span-4 col-span-12 text-right">
-                        <div>
+                        <div >
                             <img
                                 className="w-40"
-                                src="https://getjoule.co/assets//desktop/images1/logo.png"
+                                src={logo}
                                 alt="llgo"
                             />
                         </div>
-                        <p className="text-right text-sm font-medium mt-3">
-                            ژول به کیفیت و انرژی و شادابی اهمیت میده .کیفیت روز
+                        <p className="text-right text-sm font-medium mt-3" dir="rtl">
+                            فیت شو (s.j)by به کیفیت و انرژی و شادابی اهمیت میده .کیفیت روز
                             خودتون رو افزایش بدید در طی روز پر از انرژی باشید
                             بدون اینکه کالری زیادی دریافت کنید.سرحال، پرانرژی،
                             شاداب و یه حس باحال هدیه ژول به شماست.

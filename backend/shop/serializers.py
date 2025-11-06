@@ -1,6 +1,20 @@
 from rest_framework import serializers
 from .models import (Package , Meal , ExtraOptionPackage , MealPriceWeek,
-                     Product , ProductCategory, ExtraOptionProduct)
+                     Product , ProductCategory, ExtraOptionProduct, Comment)
+
+from accounts.models import User
+
+class UserViewSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = User 
+        fields = ["first_name","last_name"]
+
+class CommentSerializer(serializers.ModelSerializer):
+    author = UserViewSerializer(read_only=True)
+    class Meta:
+        model = Comment
+        fields = "__all__"
 
 class MealPriceWeekSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,6 +36,7 @@ class ExtraOptionPackageSerializer(serializers.ModelSerializer):
 class PackageSerializer(serializers.ModelSerializer):
     meals = MealSerializer(many=True, read_only=True)
     extra_options = ExtraOptionPackageSerializer(many=True, read_only=True)
+    comments = CommentSerializer(many=True, read_only=True)
     class Meta:
         model = Package
         fields = "__all__"
@@ -40,6 +55,8 @@ class ExtraOptionProductSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     extra_options = ExtraOptionProductSerializer(many=True, read_only=True)
     category = CategoryProductSerializer(read_only=True)
+    comments = CommentSerializer(many=True, read_only=True)
+
     
     class Meta:
         model = Product

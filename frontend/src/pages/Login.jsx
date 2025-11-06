@@ -32,10 +32,11 @@ function Login() {
         api.post("/accounts/token/", formLogin)
             .then((res) => {
                 setIsLoading(false);
-                localStorage.setItem("token", res.data.access);
+                localStorage.setItem("access", res.data.access);
+                localStorage.setItem("refresh",res.data.refresh);
                 api.get("/accounts/", {
                     headers: {
-                        Authorization: `Bearer ${res.data.access}`,
+                        Authorization : `Bearer ${res.data.access}`,
                         "Content-Type": "application/json",
                     },
                 })
@@ -55,7 +56,7 @@ function Login() {
             })
             .catch((error) => {
                 setIsLoading(false);
-                setAlert("ورود با مشکل مواجه شد لطفا مجددا تلاش کنید");
+                setAlert("شماره موبایل یا رمز نادرست است");
             });
     };
 
