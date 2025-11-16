@@ -4,7 +4,8 @@ import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import AccountSidebar from "../ui_components/AccountSidebar";
 import UpdateInput from "../ui_components/UpdateInput";
-import {AlertContext} from "../ui_components/AppLayout";
+import { AlertContext } from "../contexts/AlertContext";
+import { Helmet } from "react-helmet-async";
 
 function UpdateProfile() {
     const { user } = useContext(AuthContext);
@@ -60,6 +61,7 @@ function UpdateProfile() {
 
     return (
         <>
+            <Helmet><title>ویرایش پروفایل</title></Helmet>
             <div className="min-h-screen bg-gray-300 w-full px-7 sm:px-11 lg:px-20 md:gap-10 pb-5 mt-5 pt-8">
                 <div className="grid grid-cols-12 md:gap-5">
                     <div

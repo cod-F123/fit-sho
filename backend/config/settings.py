@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     
     'shop',
     'accounts',
+    'wallet',
+    'payment',
     
     # Rest
     'rest_framework',

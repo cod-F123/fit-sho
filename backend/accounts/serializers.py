@@ -1,14 +1,20 @@
 from rest_framework import serializers
-from .models import User , Profile
+from .models import User , Profile, AddressUser
+from wallet.models import Wallet
 
 
-
+class WalletUserVewSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Wallet
+        fields = ["amount","is_active","last_updated"]
 
 class UserViewSerializer(serializers.ModelSerializer):
+    wallet = WalletUserVewSerializer(read_only=True)
     
     class Meta:
         model = User
-        fields = ["phone","first_name","last_name","is_validate","get_full_name"]
+        fields = ["phone","first_name","last_name","is_validate","get_full_name","wallet"]
         
 
 class ProfileSeializer(serializers.ModelSerializer):
@@ -48,3 +54,20 @@ class OtpSerializer(serializers.Serializer):
     otp_code = serializers.CharField(
         max_length = 6
     )
+    
+    
+class AddAddressUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AddressUser
+        fields = ["title","address","zip_code"]
+        
+    def create(self, validated_data):
+        return AddressUser.objects.create(user = self.context["user"],**validated_data)
+        
+        
+class AddressUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AddressUser
+        fields = "__all__"
+        
+    

@@ -1,10 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render ,get_object_or_404
 from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import User ,UserOtpCode , Profile
-from .serializers import UserViewSerializer , RegisterUserSerializer ,OtpSerializer , ProfileSeializer , UserProfileUpdate
+from .models import User ,UserOtpCode , Profile, AddressUser
+from .serializers import (UserViewSerializer , RegisterUserSerializer ,OtpSerializer , 
+                          ProfileSeializer , UserProfileUpdate,
+                          AddressUserSerializer,
+                          AddAddressUserSerializer
+                          )
 from django.utils import timezone
 from rest_framework import status
 
@@ -126,4 +130,38 @@ class UserProfileView(APIView):
         
         else:
             return Response(user_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        
+
+class UserAddressesView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, format=None):
+        user_address = AddressUser.objects.filter(user__phone = request.user.phone)
+        
+        addresses_serializer = AddressUserSerializer(user_address, many=True)
+        
+        return Response(addresses_serializer.data, status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        user_address_serializer = AddAddressUserSerializer(data=request.data,context={"user":request.user})
+        
+        if user_address_serializer.is_valid():
+            user_address = user_address_serializer.save()
+            
+            return Response(AddressUserSerializer(user_address).data,status=status.HTTP_200_OK)
+        
+        else:
+            return Response(user_address_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    def delete(self, request, format=None):
+        try:
+            address = get_object_or_404(AddressUser, id=request.data["address_id"], user = request.user)
+            
+            
+            address.delete()
+            
+            return Response(status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+            
     

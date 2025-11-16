@@ -5,8 +5,9 @@ import api, { BASEURL } from "../service/api";
 import CommentCard from "../ui_components/CommentCard";
 import CommentForm from "../ui_components/CommentForm";
 import { AuthContext } from "../contexts/AuthContext";
-import { AlertContext } from "../ui_components/AppLayout";
+import { AlertContext } from "../contexts/AlertContext";
 import { CartContext } from "../contexts/CartContext";
+import { Helmet } from "react-helmet-async";
 
 function ProductDetail() {
     const [isLoading, setIsLoading] = useState(true);
@@ -110,9 +111,10 @@ function ProductDetail() {
                 </div>
             ) : (
                 <>
+                    <Helmet><title>{productData.name} - غذای رژیمی و سلامت </title></Helmet>
                     <div className="title w-full px-7 sm:px-11 lg:px-20 pb-5 mt-5 pt-8">
                         <h1 className="w-full text-right text-lg font-bold">
-                            {productData.name} - غذای رژیمی و سلامت ژول
+                            {productData.name} - غذای رژیمی و سلامت 
                         </h1>
                     </div>
                     <div className=" bg-gray-300 w-full px-7 sm:px-11 lg:px-20 py-8 min-h-4/5">

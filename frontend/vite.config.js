@@ -8,6 +8,6 @@ export default defineConfig({
     tailwindcss(),
   ],
   server : {
-    allowedHosts : ['localhost',"terrier-primary-moth.ngrok-free.app"],
+    allowedHosts : ['localhost'],
    }
 })

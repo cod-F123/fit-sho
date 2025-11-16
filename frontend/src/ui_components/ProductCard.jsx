@@ -1,14 +1,43 @@
 import { BASEURL } from "../service/api";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { CartContext } from "../contexts/CartContext";
+import { animate, stagger } from "animejs";
 
 function ProductCard({ product }) {
     const { addToCart, existProductInCart, removeFromCart } =
         useContext(CartContext);
+
+    const ref = useRef(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        
+                        animate(".productCard", {
+                            translateY: [300, 0],
+                            translateX: [300, 0],
+                            scale: [0.5, 1],
+                        });
+                        observer.unobserve(ref.current);
+                    }
+                });
+            },
+            { threshold: 0.2 }
+        );
+
+        observer.observe(ref.current);
+
+        return () => observer.disconnect();
+    }, []);
     return (
         <>
-            <div className="col-span-6 md:col-span-3 bg-white rounded-lg">
+            <div
+                ref={ref}
+                className="col-span-6 productCard md:col-span-3 bg-white rounded-lg"
+            >
                 <img
                     src={`${BASEURL}${product.image}`}
                     alt={product.name}
@@ -49,24 +78,32 @@ function ProductCard({ product }) {
                             <>
                                 {existProductInCart(product.slug) ? (
                                     <>
-                                        <button onClick={()=>{removeFromCart(product.slug)}} className="rounded-lg bg-red-500 text-white max-sm:w-full px-2 py-2 cursor-pointer transition-all ease-in border-2 duration-150 hover:shadow-md border-red-500 hover:bg-white hover:text-red-500">
+                                        <button
+                                            onClick={() => {
+                                                removeFromCart(product.slug);
+                                            }}
+                                            className="rounded-lg bg-red-500 text-white max-sm:w-full px-2 py-2 cursor-pointer transition-all ease-in border-2 duration-150 hover:shadow-md border-red-500 hover:bg-white hover:text-red-500"
+                                        >
                                             حذف از سبد
                                         </button>
                                     </>
                                 ) : (
                                     <>
-                                        <button onClick={() => {
-                                                            addToCart(
-                                                                product,
-                                                                1,
-                                                                product.price,
-                                                                false,
-                                                                [],
-                                                                [],
-                                                                "",
-                                                                0
-                                                            );
-                                                        }} className="rounded-lg bg-green-500 text-white max-sm:w-full px-2 py-2 cursor-pointer transition-all ease-in border-2 duration-150 hover:shadow-md border-green-500 hover:bg-white hover:text-green-500">
+                                        <button
+                                            onClick={() => {
+                                                addToCart(
+                                                    product,
+                                                    1,
+                                                    product.price,
+                                                    false,
+                                                    [],
+                                                    [],
+                                                    "",
+                                                    0
+                                                );
+                                            }}
+                                            className="rounded-lg bg-green-500 text-white max-sm:w-full px-2 py-2 cursor-pointer transition-all ease-in border-2 duration-150 hover:shadow-md border-green-500 hover:bg-white hover:text-green-500"
+                                        >
                                             سفارش
                                         </button>
                                     </>

@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import AccountSidebar from "../ui_components/AccountSidebar";
 import api from "../service/api";
+import { Helmet } from "react-helmet-async";
 
 function Account() {
     const { user } = useContext(AuthContext);
@@ -25,6 +26,9 @@ function Account() {
 
     return (
         <>
+        <Helmet>
+            <title>اکانت من | fit bama</title>
+        </Helmet>
             <div className="min-h-screen bg-gray-300 w-full px-7 sm:px-11 lg:px-20 md:gap-10 pb-5 mt-5 pt-8">
                 <div className="grid grid-cols-12 md:gap-5">
                     <div className="md:col-span-8 col-span-12 grid grid-cols-6">
@@ -32,14 +36,14 @@ function Account() {
                             <div className="">
                                 <p className="text-lg font-bold text-right text-white">
                                     اعتبار حساب من{" "}
-                                    <span className="text-yellow-400 mr-3 ml-3">
-                                        0
+                                    <span className="text-yellow-400 mx-1">
+                                        {user.wallet.amount}
                                     </span>{" "}
                                     تومان
                                 </p>
                             </div>
                             <div className=" mt-10 md:mt-0">
-                                <Link className="text-white px-7 cursor-pointers py-3 rounded-4xl text-center border-2 border-white">
+                                <Link to={"/accounts/myWallet"} className="text-white px-7 cursor-pointers py-3 rounded-4xl text-center border-2 border-white">
                                     افزایش اعتبار
                                 </Link>
                             </div>

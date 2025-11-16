@@ -2,8 +2,9 @@ import api from "../service/api";
 import { useNavigate, Link } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { AlertContext } from "../ui_components/AppLayout";
+import { AlertContext } from "../contexts/AlertContext";
 import Input from "../ui_components/Input";
+import { Helmet } from "react-helmet-async";
 
 function ValidateUser() {
     const [formValidateUser, setFormValidateUser] = useState({
@@ -64,6 +65,7 @@ function ValidateUser() {
 
     return (
         <>
+            <Helmet><title>تائید حساب کاربری</title></Helmet>
             {isLoading ? (
                 <>
                     <div className="w-full top-0 bottom-0 absolute z-50 flex bg-gray-100 justify-center items-center">

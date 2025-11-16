@@ -1,13 +1,13 @@
 import PackageCard from "../ui_components/PackageCard";
 import { useEffect, useState } from "react";
 import api from "../service/api";
+import { Helmet } from "react-helmet-async";
 
 function Packages() {
     const [packages, setPackages] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        console.log("3");
         api.get("/shop/getPackages/")
             .then((res) => {
                 setPackages(res.data);
@@ -20,6 +20,7 @@ function Packages() {
 
     return (
         <>
+            <Helmet><title>بسته های هفتگی رژیمی</title></Helmet>
             {isLoading ? (
                 <>
                     <div className="w-full top-0 bottom-0 absolute z-50 flex bg-gray-300 justify-center items-center">

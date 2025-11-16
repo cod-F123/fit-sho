@@ -1,11 +1,15 @@
 import api from "../service/api";
 import Input from "../ui_components/Input";
 import { Link } from "react-router-dom";
-import { useState, useContext } from "react";
-import { AlertContext } from "../ui_components/AppLayout";
+import { useState, useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import { AlertContext } from "../contexts/AlertContext";
 
 import { useNavigate } from "react-router-dom";
+
+import { animate } from "animejs";
+
+import { Helmet } from "react-helmet-async";
 
 function Login() {
     const [formLogin, setFormLogin] = useState({
@@ -14,7 +18,6 @@ function Login() {
     });
 
     const [isLoading, setIsLoading] = useState(false);
-
     const navigate = useNavigate();
 
     const onChangeInput = (e) => {
@@ -25,7 +28,7 @@ function Login() {
     };
 
     const { setAlert } = useContext(AlertContext);
-    const {user,setUser,setIsLogin} = useContext(AuthContext)
+    const { user, setUser, setIsLogin } = useContext(AuthContext);
 
     const onClickButton = (e) => {
         setIsLoading(true);
@@ -33,10 +36,10 @@ function Login() {
             .then((res) => {
                 setIsLoading(false);
                 localStorage.setItem("access", res.data.access);
-                localStorage.setItem("refresh",res.data.refresh);
+                localStorage.setItem("refresh", res.data.refresh);
                 api.get("/accounts/", {
                     headers: {
-                        Authorization : `Bearer ${res.data.access}`,
+                        Authorization: `Bearer ${res.data.access}`,
                         "Content-Type": "application/json",
                     },
                 })
@@ -44,14 +47,13 @@ function Login() {
                         setUser(res.data);
                         setAlert("شما با موفقیت وارد شدید");
                         setIsLogin(true);
-                        navigate("/")
-
+                        navigate("/");
                     })
                     .catch((error) => {
                         setUser(null);
                         localStorage.removeItem("token");
                         setAlert("دریافت اطلاعات کاربر با خطا مواجه شد");
-                        setIsLogin(false)
+                        setIsLogin(false);
                     });
             })
             .catch((error) => {
@@ -62,6 +64,9 @@ function Login() {
 
     return (
         <>
+        <Helmet >
+            <title >ورود | fit bama</title>
+        </Helmet>
             {isLoading ? (
                 <>
                     <div className="w-full top-0 bottom-0 absolute z-50 flex bg-gray-100 justify-center items-center">
@@ -70,7 +75,9 @@ function Login() {
                 </>
             ) : (
                 <div className="flex flex-col items-center justify-center min-h-screen mx-3 my-4">
-                    <div className="w-6/7 md:w-2/5 lg:w-1/4 p-4 pt-22 rounded-lg rounded-t-full border border-gray-300 bg-gray-100 shadow">
+                    <div
+                        className="w-6/7 login-form md:w-2/5 lg:w-1/4 p-4 pt-22 rounded-lg rounded-t-full border border-gray-300 bg-gray-100 shadow"
+                    >
                         <p
                             className="text-center text-md  font-bold mb-24"
                             dir="rtl"
@@ -99,7 +106,10 @@ function Login() {
                         >
                             ورود
                         </button>
-                        <Link to="/accounts/register" className="w-full cursor-pointer rounded-md flex items-center justify-center mt-2 py-2 bg-green-600 text-white">
+                        <Link
+                            to="/accounts/register"
+                            className="w-full cursor-pointer rounded-md flex items-center justify-center mt-2 py-2 bg-green-600 text-white"
+                        >
                             ثبت نام
                         </Link>
                     </div>

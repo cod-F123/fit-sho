@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 
 import { AuthProvider } from "./contexts/AuthContext";
+import AlertProvider from "./contexts/AlertContext";
 import ProtectedRoute from "./ui_components/ProtectedRoute";
 import ValidateUser from "./pages/ValidateUser";
 import Account from "./pages/Account";
@@ -20,60 +21,80 @@ import { CartProvider } from "./contexts/CartContext";
 import Cart from "./pages/Cart";
 import UpdateProfile from "./pages/UpdateProfile";
 
+import MyWallet from "./pages/MyWallet";
+import MyAddresses from "./pages/MyAddresses";
+
+import ContactUs from "./pages/ContactUs";
+
 function App() {
     return (
         <>
-            <AuthProvider>
-                <CartProvider>
-                    <BrowserRouter>
-                        <Routes>
-                            <Route path="/" element={<AppLayout />}>
-                                <Route index element={<Home />} />
-                                <Route path="/cart" element={<Cart />} />
-                                <Route
-                                    path="/packages"
-                                    element={<Packages />}
-                                />
-                                <Route
-                                    path="/packages/detail/:id"
-                                    element={<PackageDetail />}
-                                />
-                                <Route
-                                    path="/products"
-                                    element={<Products />}
-                                />
-                                <Route
-                                    path="/products/detail/:id"
-                                    element={<ProductDetail />}
-                                />
-
-                                <Route
-                                    path="/accounts/login"
-                                    element={<Login />}
-                                />
-                                <Route
-                                    path="/accounts/register"
-                                    element={<Register />}
-                                />
-
-                                <Route element={<ProtectedRoute />}>
+            <AlertProvider>
+                <AuthProvider>
+                    <CartProvider>
+                        <BrowserRouter>
+                            <Routes>
+                                <Route path="/" element={<AppLayout />}>
+                                    <Route index element={<Home />} />
+                                    <Route path="/cart" element={<Cart />} />
+                                    <Route path="/contactUs" element={<ContactUs />} />
                                     <Route
-                                        path="/accounts"
-                                        element={<Account />}
+                                        path="/packages"
+                                        element={<Packages />}
                                     />
-                                    <Route path="/accounts/profile/edit" element={<UpdateProfile />} />
                                     <Route
-                                        path="/accounts/validate"
-                                        element={<ValidateUser />}
+                                        path="/packages/detail/:id"
+                                        element={<PackageDetail />}
                                     />
+                                    <Route
+                                        path="/products"
+                                        element={<Products />}
+                                    />
+                                    <Route
+                                        path="/products/detail/:id"
+                                        element={<ProductDetail />}
+                                    />
+
+                                    <Route
+                                        path="/accounts/login"
+                                        element={<Login />}
+                                    />
+                                    <Route
+                                        path="/accounts/register"
+                                        element={<Register />}
+                                    />
+
+                                    <Route element={<ProtectedRoute />}>
+                                        <Route
+                                            path="/accounts"
+                                            element={<Account />}
+                                        />
+                                        <Route
+                                            path="/accounts/profile/edit"
+                                            element={<UpdateProfile />}
+                                        />
+                                        <Route
+                                            path="/accounts/validate"
+                                            element={<ValidateUser />}
+                                        />
+
+                                        <Route
+                                            path="/accounts/myWallet"
+                                            element={<MyWallet />}
+                                        />
+                                        <Route
+                                            path="/accounts/myAddresses"
+                                            element={<MyAddresses />}
+                                        />
+                                    </Route>
+
+                                    <Route path="*" element={<Page404 />} />
                                 </Route>
-
-                                <Route path="*" element={<Page404 />} />
-                            </Route>
-                        </Routes>
-                    </BrowserRouter>
-                </CartProvider>
-            </AuthProvider>
+                            </Routes>
+                        </BrowserRouter>
+                    </CartProvider>
+                </AuthProvider>
+            </AlertProvider>
         </>
     );
 }

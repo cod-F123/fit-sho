@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User , UserOtpCode , Profile
+from .models import User , UserOtpCode , Profile, AddressUser
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 
@@ -8,6 +8,10 @@ from django.utils.translation import gettext_lazy as _
 
 class ProfileUserAdminInline(admin.StackedInline):
     model = Profile
+    extra = 1
+    
+class UserAddressAdminInline(admin.StackedInline):
+    model = AddressUser
     extra = 1
 
 @admin.register(User)
@@ -48,7 +52,7 @@ class CustomUserAdmin(UserAdmin):
         "groups",
         "user_permissions",
     )
-    inlines = [ProfileUserAdminInline,]
+    inlines = [ProfileUserAdminInline,UserAddressAdminInline]
     
 admin.site.register(UserOtpCode)
 
@@ -58,5 +62,10 @@ class ProfileUserAdmin(admin.ModelAdmin):
     list_filter = ["is_male"]
     
     search_fields = ["user__phone","user__first_name","user__last_name"]
+    
+@admin.register(AddressUser)
+class AddressUserAdmin(admin.ModelAdmin):
+    list_display = ["user__phone","title","zip_code"]
+    search_fields = ["user__phone","zip_code"]
     
     

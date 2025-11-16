@@ -130,3 +130,20 @@ def create_profile_user(sender, instance, created, **kwargs):
         user_profile.save()
         
 post_save.connect(create_profile_user, sender=User)
+
+
+
+class AddressUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="addresses")
+    
+    title = models.CharField(max_length=255, verbose_name="عنوان")
+    address = models.TextField(verbose_name="آدرس")
+    zip_code = models.CharField(max_length=10 , verbose_name="کد پستی")
+    
+    class Meta:
+        verbose_name = "آدرس"
+        verbose_name_plural = "آدرس ها"
+    
+    def __str__(self):
+        return f"{self.user} - {self.title}"
+    

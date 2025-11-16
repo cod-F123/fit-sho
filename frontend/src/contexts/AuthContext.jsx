@@ -25,7 +25,7 @@ export const AuthProvider = ({children})=>{
             }).catch((error)=>{
                 setUser(null);
                 setIsLogin(false);
-                localStorage.removeItem("token");
+                localStorage.removeItem("access");
                 setIsLoading(false);
 
             })
@@ -35,7 +35,8 @@ export const AuthProvider = ({children})=>{
     }, []);
 
     const logout = ()=>{
-        localStorage.removeItem("token");
+        localStorage.removeItem("access");
+        localStorage.removeItem("refresh");
         setUser(null);
         setIsLogin(false);
     }

@@ -2,19 +2,14 @@ import Nav from "./Nav";
 import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
 import Alert from "./Alert";
-import { createContext, useState } from "react";
-
-
-
-const AlertContext = createContext();
+import { useState, useContext } from "react";
+import { AlertContext } from "../contexts/AlertContext";
 
 function AppLayout() {
-
-    const [alertMessage,setAlert] = useState(null)
+    const { alertMessage } = useContext(AlertContext);
 
     return (
-        <>  
-        <AlertContext.Provider value={{alertMessage,setAlert}}>
+        <>
             <main className="min-h-screen selection:text-white selection:bg-black  z-0 flex flex-col w-full relative">
                 <Nav />
                 {alertMessage && <Alert message={alertMessage} />}
@@ -23,7 +18,6 @@ function AppLayout() {
                 </div>
                 <Footer />
             </main>
-        </AlertContext.Provider>
         </>
     );
 }

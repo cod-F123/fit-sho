@@ -152,7 +152,7 @@ function Nav() {
                         </li>
                         <li>
                             <Link
-                                to={"/"}
+                                to={"/contactUs"}
                                 className="ml-3 text-black hover:text-gray-400 font-bold text-sm"
                             >
                                 تماس با ما
@@ -201,7 +201,7 @@ function Nav() {
                     </li>
                     <li>
                         <Link
-                            to="/"
+                            to="/contactUs"
                             onClick={onMenuAction}
                             className="block text-xl font-bold py-2"
                         >

@@ -15,10 +15,10 @@ function Footer() {
                             />
                         </div>
                         <p className="text-right text-sm font-medium mt-3" dir="rtl">
-                            فیت شو (s.j)by به کیفیت و انرژی و شادابی اهمیت میده .کیفیت روز
+                            فیت شو به کیفیت و انرژی و شادابی اهمیت میده .کیفیت روز
                             خودتون رو افزایش بدید در طی روز پر از انرژی باشید
                             بدون اینکه کالری زیادی دریافت کنید.سرحال، پرانرژی،
-                            شاداب و یه حس باحال هدیه ژول به شماست.
+                            شاداب و یه حس باحال هدیه ما به شماست.
                         </p>
                     </div>
                     <div className="lg:col-span-8 col-span-12 grid grid-cols-12">
@@ -33,7 +33,7 @@ function Footer() {
                                 to="/"
                                 className="text-black md:mt-2 lg:mt-4 font-medium block"
                             >
-                                اخذ نمایندگی ژول
+                                اخذ نمایندگی فیت با ما
                             </Link>
                             <Link
                                 to="/"
@@ -172,7 +172,7 @@ function Footer() {
                 </div>
                 
                 <div className="flex rounded-tr-2xl w-full rounded-tl-2xl items-center py-3 justify-center bg-black text-white" dir="rtl">
-                        تمامی حقوق این سایت متعلق به fit sho by(sj) 1404.
+                    تمامی حقوق این سایت متعلق به fit bama 1404 است
                 </div>
             </div>
         </>

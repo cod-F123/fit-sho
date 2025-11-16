@@ -1,6 +1,7 @@
 import { CartContext } from "../contexts/CartContext";
 import { useState, useContext } from "react";
 import { BASEURL } from "../service/api";
+import { Helmet } from "react-helmet-async";
 
 function Cart() {
     const [isLoading, setIsLoading] = useState(false);
@@ -8,6 +9,7 @@ function Cart() {
 
     return (
         <>
+            <Helmet><title>سبد خرید | fit bama</title></Helmet>
             {isLoading ? (
                 <>
                     <div className="w-full top-0 bottom-0 bg-gray-300 absolute z-50 flex justify-center items-center">

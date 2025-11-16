@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../service/api";
 import ProductCard from "../ui_components/ProductCard";
+import { Helmet } from "react-helmet-async";
 
 function Products() {
     const [categories, setCategories] = useState([]);
@@ -26,14 +27,19 @@ function Products() {
     }, []);
 
     const filterCategory = (cName) => {
+        setIsLoading(true)
         setCategorySelected(cName);
         api.get(`/shop/getProducts/?category=${cName}`).then((res) => {
             setProducts(res.data.products);
-        });
+            setIsLoading(false);
+        }).catch((error)=>{
+            setIsLoading(false);
+        })
     };
 
     return (
         <>
+            <Helmet ><title>غذای روزانه رژیمی</title></Helmet>
             {isLoading ? (
                 <>
                     <div className="w-full top-0 bottom-0 absolute z-50 flex bg-gray-300 justify-center items-center">

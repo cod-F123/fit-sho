@@ -7,10 +7,12 @@ import image from "../assets/images/bos.png";
 import { Link } from "react-router-dom";
 import PackagesSlider from "../ui_components/PackagesSlider";
 import ProductSlider from "../ui_components/ProductSlider";
+import { Helmet } from "react-helmet-async";
 
 function Home() {
     return (
         <>
+        <Helmet><title>fit bama</title></Helmet>
             <div className="grid grid-cols-12 mx-2 md:mx-20 my-4 mt-7">
                 <div className="col-span-12 mt-5">
                     <Swiper
@@ -50,7 +52,7 @@ function Home() {
                         />
                         <h2 className="text-center">کتابچه های آشپزی غذای رژیمی</h2>
                     </Link>
-                    <Link className="md:col-span-3 col-span-6 rounded-md bg-gray-400 flex flex-col justify-center items-center p-5">
+                    <Link to={"/products"} className="md:col-span-3 col-span-6 rounded-md bg-gray-400 flex flex-col justify-center items-center p-5">
                         <img
                             src="https://getjoule.co/assets/images/home_icon/c1d089450ed839fa99e53cbafd5cd4ee.png"
                             className="w-24 rounded-full cursor-pointer hover:bg-gray-200 p-3"
