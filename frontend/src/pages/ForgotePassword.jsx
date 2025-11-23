@@ -44,7 +44,16 @@ function ForgotePassword() {
     return (
         <>
             <Helmet ><title>فراموشی رمزعبور | fit bama</title></Helmet>
-            {stateOfProgress == "sendOtp" ? (
+            {stateOfProgress == "cPass" ? (
+                <>
+                    <ResetPassword setStateProgress={setStateOfProgress} />
+                </>
+            ) : stateOfProgress == "verifyOtp" ? (
+                <>
+                    <VerifyResetOtp setStateProgress={setStateOfProgress} />
+                </>
+            ) : (
+                
                 <>
                     {isLoading ? (
                         <>
@@ -84,14 +93,6 @@ function ForgotePassword() {
                             </div>
                         </div>
                     )}
-                </>
-            ) : stateOfProgress == "verifyOtp" ? (
-                <>
-                    <VerifyResetOtp setStateProgress={setStateOfProgress} />
-                </>
-            ) : (
-                <>
-                    <ResetPassword setStateProgress={setStateOfProgress} />
                 </>
             )}
         </>

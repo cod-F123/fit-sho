@@ -48,8 +48,12 @@ function ChangePassword() {
             <Helmet>
                 <title>ویرایش رمزعبور | fit bama</title>
             </Helmet>
-            {stateOfProgress == "sendOtp" ? (
-                <>
+            {stateOfProgress == "cPass" ? (
+                <><ResetPassword setStateProgress={setStateOfProgress} /></>
+            ) : stateOfProgress == "verifyOtp" ? (<>
+                <VerifyResetOtp setStateProgress={setStateOfProgress} />
+            </>) : (
+        <>
                     {isLoading ? (
                         <>
                             <div className="w-full top-0 bottom-0 absolute z-50 flex bg-gray-100 justify-center items-center">
@@ -98,10 +102,7 @@ function ChangePassword() {
                             </div>
                         </>
                     )}
-                </>
-            ) : stateOfProgress == "verifyOtp" ? (<>
-                <VerifyResetOtp setStateProgress={setStateOfProgress} />
-            </>) : (<><ResetPassword setStateProgress={setStateOfProgress} /></>)}
+                </>)}
         </>
     );
 }
