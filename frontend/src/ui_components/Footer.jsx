@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "../assets/images/logo.png";
+import logo from "../assets/images/logo-01.png";
 
 function Footer() {
     return (
@@ -101,7 +101,7 @@ function Footer() {
                                 پشتیبانی و امور مشتریان
                             </h6>
                             <span className="text-black md:mt-2 lg:mt-4 font-medium block">
-                                <strong>تماس تلفنی : </strong>0182737363
+                                <strong>تماس تلفنی : </strong>09190944491
                             </span>
                             <Link className="text-black md:mt-2 lg:mt-4 font-bold block">
                                 چت آنلاین در واتس آپ
@@ -112,7 +112,7 @@ function Footer() {
                                 مشاور تغذیه
                             </h6>
                             <span className="text-black md:mt-2 lg:mt-4 font-medium block">
-                                <strong>تماس تلفنی : </strong>0182737363
+                                <strong>تماس تلفنی : </strong>09190944491
                             </span>
                             <Link className="text-black md:mt-2 lg:mt-4 font-bold block">
                                 چت آنلاین در واتس آپ
@@ -160,7 +160,7 @@ function Footer() {
                                 to="/"
                                 className="text-black md:mt-2 lg:mt-4 font-medium"
                             >
-                                email@email.com
+                                info@fit-bama.ir
                             </Link>
                             
                             

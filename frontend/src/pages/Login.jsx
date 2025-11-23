@@ -97,7 +97,7 @@ function Login() {
                             label={"رمزعبور*"}
                             type={"password"}
                         />
-                        <Link className="block text-right text-sm font-bold text-black">
+                        <Link to={"/accounts/forgetPassword"} className="block text-right text-sm font-bold text-black">
                             فراموشی رمز عبور
                         </Link>
                         <button

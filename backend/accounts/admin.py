@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User , UserOtpCode , Profile, AddressUser
+from .models import User , UserOtpCode , Profile, AddressUser, ResetPasswordOtp
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 
@@ -55,6 +55,7 @@ class CustomUserAdmin(UserAdmin):
     inlines = [ProfileUserAdminInline,UserAddressAdminInline]
     
 admin.site.register(UserOtpCode)
+admin.site.register(ResetPasswordOtp)
 
 @admin.register(Profile)
 class ProfileUserAdmin(admin.ModelAdmin):

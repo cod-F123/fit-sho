@@ -51,6 +51,10 @@ function AccountSidebar() {
                         to={"/accounts/profile/edit"}
                         text={"ویرایش پروفایل"}
                     />
+                    <DashboardLink
+                        to={"/accounts/changePassword"}
+                        text={"ویرایش رمزعبور"}
+                    />
                     <Link
                         onClick={()=>{logout();}}
                         className="flex flex-row mb-5 hover:border-b-red-800 text-red-500 hover:text-red-800 transition-all duration-200 justify-between items-center border-b pb-2 border-b-red-500"

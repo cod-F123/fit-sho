@@ -33,8 +33,9 @@ function Register() {
         setIsLoading(true);
         api.post("/accounts/register/", formRegister)
             .then((res) => {
-                localStorage.setItem("token",res.data.token.access)
-                setUser(res.data);
+                localStorage.setItem("access",res.data.token.access);
+                localStorage.setItem("refresh",res.data.token.refresh)
+                setUser(res.data.user);
                 setIsLogin(true);
                 navigate("/accounts/validate");
                 setIsLoading(false);

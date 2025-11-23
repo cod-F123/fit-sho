@@ -42,6 +42,8 @@ function ValidateUser() {
                 }
             );
 
+            setUser(res.data.user);
+
             setAlert(res.data.message || "شماره شما با موفقیت تأیید شد ✅");
 
             navigate("/");

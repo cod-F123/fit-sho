@@ -25,7 +25,7 @@ function ProductSlider() {
     return (
         <>
             <div className="col-span-12 bg-gray-300 rounded-2xl p-5" dir="rtl">
-                <p className="text-right text-md mb-3 font-bold">بسته های هفتگی </p>
+                <p className="text-right text-md mb-3 font-bold">غذای روزانه</p>
                 <Swiper
                     spaceBetween={20}
                     slidesPerView={3}

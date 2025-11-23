@@ -2,10 +2,25 @@ import { CartContext } from "../contexts/CartContext";
 import { useState, useContext } from "react";
 import { BASEURL } from "../service/api";
 import { Helmet } from "react-helmet-async";
+import {useNavigate} from "react-router-dom";
+import api from "../service/api";
 
 function Cart() {
     const [isLoading, setIsLoading] = useState(false);
     const { cartItems, removeFromCart, totalPrice, clearCart } = useContext(CartContext);
+
+    const navigate = useNavigate();
+
+
+    const submitToCreateOrder = ()=>{
+        api.post("/payment/cart/",{"cart":cartItems}).then((res)=>{
+            clearCart();
+            navigate(`/accounts/orders`);
+
+        }).catch((error)=>{
+            console.log(error);
+        })
+    };
 
     return (
         <>
@@ -97,7 +112,7 @@ function Cart() {
                                             </span>
                                         </div>
                                         <div className="flex flex-col mt-5 p-2 md:p-5 rounded-md bg-white">
-                                            <button className="bg-green-500 mb-2 w-full text-white px-4 py-4 rounded-md cursor-pointer transition-all ease-in border-2 duration-150 hover:shadow-md border-green-500 hover:bg-white hover:text-green-500">
+                                            <button onClick={()=>{submitToCreateOrder()}} className="bg-green-500 mb-2 w-full text-white px-4 py-4 rounded-md cursor-pointer transition-all ease-in border-2 duration-150 hover:shadow-md border-green-500 hover:bg-white hover:text-green-500">
                                                 شروع پرداخت
                                             </button>
                                             <button

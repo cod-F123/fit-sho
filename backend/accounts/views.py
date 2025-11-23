@@ -3,14 +3,16 @@ from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import User ,UserOtpCode , Profile, AddressUser
+from .models import User ,UserOtpCode , Profile, AddressUser , ResetPasswordOtp
 from .serializers import (UserViewSerializer , RegisterUserSerializer ,OtpSerializer , 
                           ProfileSeializer , UserProfileUpdate,
                           AddressUserSerializer,
-                          AddAddressUserSerializer
+                          AddAddressUserSerializer,
+                          SendResetOtpSerializer, VerifyResetOtpSerializer, ResetPasswordSerializer
                           )
 from django.utils import timezone
 from rest_framework import status
+from django.contrib.auth.hashers import make_password
 
 from rest_framework_simplejwt.tokens import RefreshToken
 # Create your views here.
@@ -36,7 +38,7 @@ class RegisterUserView(APIView):
             refresh = RefreshToken.for_user(user)
             
             return Response({
-                "user":user_serializer.validated_data,
+                "user":UserViewSerializer(instance=user).data,
                 "token" : {
                     "access" : str(refresh.access_token),
                     "refresh" : str(refresh)
@@ -97,7 +99,7 @@ class ValidateUser(APIView):
         otp_obj.delete()
 
         return Response(
-            {"message": "شماره شما با موفقیت تأیید شد."},
+            {"user":UserViewSerializer(instance=user).data,"message": "شماره شما با موفقیت تأیید شد."},
             status=status.HTTP_200_OK
         )
     
@@ -164,4 +166,84 @@ class UserAddressesView(APIView):
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
             
+            
+            
+class SendResetOtpView(APIView):
     
+    def post(self, request, format = None):
+        
+        serializer = SendResetOtpSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            
+            last_reset_otp = ResetPasswordOtp.objects.filter(phone = serializer.validated_data["phone"], is_used=False).first()
+            
+            if last_reset_otp and last_reset_otp.expired_at > timezone.now():
+                return Response({"message":"کد ارسال شد"}, status=status.HTTP_200_OK)
+            
+            if last_reset_otp:
+                last_reset_otp.delete()
+            
+            new_reset_otp = ResetPasswordOtp.objects.create(phone = serializer.validated_data["phone"])
+            
+            return Response({"message":"کد ارسال شد"},status=status.HTTP_200_OK)
+        
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class VerifyResetOtpView(APIView):
+    def post(self, request, format=None):
+        
+        serializer = VerifyResetOtpSerializer(data= request.data)
+        
+        if serializer.is_valid():
+            
+            phone = serializer.validated_data["phone"]
+            
+            reset_otp = ResetPasswordOtp.objects.filter(phone = phone, code = serializer.validated_data["code"], is_used = False).first()
+            
+            if reset_otp is None:
+                return Response({"message":"کد اشتباه است"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            if reset_otp.expired_at < timezone.now():
+                return Response({"message":"کد منقضی شده"}, status=400)
+            
+            reset_otp.is_used = True
+            reset_otp.save()
+
+            return Response({"message":"کد تایید شد"}, status=200)
+            
+            
+        
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+                
+class ResetPasswordView(APIView):
+    def post(self, request, format=None):
+        
+        serializer = ResetPasswordSerializer(data = request.data)
+        
+        if serializer.is_valid():
+            phone = serializer.validated_data["phone"]
+            new_password = serializer.validated_data["new_password"]
+            
+            reset_otp = ResetPasswordOtp.objects.filter(phone = phone, is_used = True).order_by("-created_at").first()
+            
+            if reset_otp is None or reset_otp.expired_at < timezone.now():
+                return Response({"message": "کد تایید معتبر نیست"}, status=400)
+            
+            user = User.objects.get(phone = phone)
+            user.password = make_password(new_password)
+            user.save()
+            
+            reset_otp.delete()
+            
+            return Response({"message":"رمز تغییر کرد"}, status=status.HTTP_200_OK)
+            
+               
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)          
+        

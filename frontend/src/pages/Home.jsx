@@ -1,18 +1,30 @@
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import {
+    Navigation,
+    Pagination,
+    Scrollbar,
+    A11y,
+    Autoplay,
+} from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import image from "../assets/images/bos.png";
 import { Link } from "react-router-dom";
 import PackagesSlider from "../ui_components/PackagesSlider";
 import ProductSlider from "../ui_components/ProductSlider";
 import { Helmet } from "react-helmet-async";
+import banner1 from "../assets/images/banner1.jpg";
+import banner2 from "../assets/images/banner2.jpg";
+import banner3 from "../assets/images/banner3.jpg";
+import banner4 from "../assets/images/banner4.jpg";
+import banner5 from "../assets/images/banner5.jpg";
 
 function Home() {
     return (
         <>
-        <Helmet><title>fit bama</title></Helmet>
+            <Helmet>
+                <title>fit bama</title>
+            </Helmet>
             <div className="grid grid-cols-12 mx-2 md:mx-20 my-4 mt-7">
                 <div className="col-span-12 mt-5">
                     <Swiper
@@ -21,26 +33,38 @@ function Home() {
                         }}
                         loop={true}
                         navigation={true}
-                        modules={[Pagination, Navigation]}
+                        modules={[Autoplay, Pagination, Navigation]}
                         className="bannerSlider"
+                        autoplay={{
+                            delay: 3500,
+                            disableOnInteraction: false,
+                        }}
                     >
                         <SwiperSlide>
-                            <Link>
-                                <img
-                                    src="https://getjoule.co/assets/images/slide/a50d07a6aa86a69657b3562018e5b694.jpg"
-                                    alt="slide"
-                                />
+                            <Link to={"/packages"}>
+                                <img src={banner1} alt="slide" />
+                            </Link>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Link to={"/products"}>
+                                <img src={banner2} alt="slide" />
                             </Link>
                         </SwiperSlide>
                         <SwiperSlide>
                             <Link>
-                                <img
-                                    src="https://getjoule.co/assets/images/slide/b7bca7eb45ed0c1f5c61b6f97d2fb7be.jpg"
-                                    alt="slide"
-                                />
+                                <img src={banner3} alt="slide" />
                             </Link>
                         </SwiperSlide>
-                        
+                        <SwiperSlide>
+                            <Link to={"/packages"}>
+                                <img src={banner4} alt="slide" />
+                            </Link>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Link to={"/products"}>
+                                <img src={banner5} alt="slide" />
+                            </Link>
+                        </SwiperSlide>
                     </Swiper>
                 </div>
                 <div className="col-span-12 grid grid-cols-12 gap-5 my-5">
@@ -50,9 +74,14 @@ function Home() {
                             className="w-24 rounded-full cursor-pointer hover:bg-gray-200 p-3"
                             alt="cat"
                         />
-                        <h2 className="text-center">کتابچه های آشپزی غذای رژیمی</h2>
+                        <h2 className="text-center">
+                            کتابچه های آشپزی غذای رژیمی
+                        </h2>
                     </Link>
-                    <Link to={"/products"} className="md:col-span-3 col-span-6 rounded-md bg-gray-400 flex flex-col justify-center items-center p-5">
+                    <Link
+                        to={"/products"}
+                        className="md:col-span-3 col-span-6 rounded-md bg-gray-400 flex flex-col justify-center items-center p-5"
+                    >
                         <img
                             src="https://getjoule.co/assets/images/home_icon/c1d089450ed839fa99e53cbafd5cd4ee.png"
                             className="w-24 rounded-full cursor-pointer hover:bg-gray-200 p-3"
@@ -60,7 +89,10 @@ function Home() {
                         />
                         <h2 className="text-center">سوپرمارکت رژیمی و سلامت</h2>
                     </Link>
-                    <Link to="/products" className="md:col-span-3 col-span-6 rounded-md bg-gray-400 flex flex-col justify-center items-center p-5">
+                    <Link
+                        to="/products"
+                        className="md:col-span-3 col-span-6 rounded-md bg-gray-400 flex flex-col justify-center items-center p-5"
+                    >
                         <div className="rounded-full cursor-pointer hover:bg-gray-200 p-3">
                             <img
                                 src="https://getjoule.co/assets/images/home_icon/c71ce6c864c594ca8b92ab8e9e0c9705.png"
@@ -81,14 +113,16 @@ function Home() {
                             className="w-24 transition-all ease-in duration-200 rounded-full cursor-pointer hover:bg-gray-200 p-3"
                             alt="cat"
                         />
-                        <h2 className="text-center">بسته های هفتگی غذای رژیمی</h2>
+                        <h2 className="text-center">
+                            بسته های هفتگی غذای رژیمی
+                        </h2>
                     </Link>
                 </div>
-                
+
                 <PackagesSlider />
-                <br /><br />
+                <br />
+                <br />
                 <ProductSlider />
-                
             </div>
         </>
     );

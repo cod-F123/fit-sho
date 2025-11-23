@@ -26,6 +26,11 @@ import MyAddresses from "./pages/MyAddresses";
 
 import ContactUs from "./pages/ContactUs";
 
+import ListOrder from "./pages/OrderList";
+import OrderDetail from "./pages/OrderDetail";
+import ChangePassword from "./pages/ChangePassword";
+import ForgotePassword from "./pages/ForgotePassword";
+
 function App() {
     return (
         <>
@@ -37,7 +42,10 @@ function App() {
                                 <Route path="/" element={<AppLayout />}>
                                     <Route index element={<Home />} />
                                     <Route path="/cart" element={<Cart />} />
-                                    <Route path="/contactUs" element={<ContactUs />} />
+                                    <Route
+                                        path="/contactUs"
+                                        element={<ContactUs />}
+                                    />
                                     <Route
                                         path="/packages"
                                         element={<Packages />}
@@ -59,20 +67,30 @@ function App() {
                                         path="/accounts/login"
                                         element={<Login />}
                                     />
+
                                     <Route
                                         path="/accounts/register"
                                         element={<Register />}
                                     />
+
+                                    <Route path="/accounts/forgetPassword" element={<ForgotePassword />} />
 
                                     <Route element={<ProtectedRoute />}>
                                         <Route
                                             path="/accounts"
                                             element={<Account />}
                                         />
+
+                                        <Route
+                                            path="/accounts/changePassword"
+                                            element={<ChangePassword />}
+                                        />
+
                                         <Route
                                             path="/accounts/profile/edit"
                                             element={<UpdateProfile />}
                                         />
+
                                         <Route
                                             path="/accounts/validate"
                                             element={<ValidateUser />}
@@ -82,9 +100,19 @@ function App() {
                                             path="/accounts/myWallet"
                                             element={<MyWallet />}
                                         />
+
                                         <Route
                                             path="/accounts/myAddresses"
                                             element={<MyAddresses />}
+                                        />
+
+                                        <Route
+                                            path="/accounts/orders"
+                                            element={<ListOrder />}
+                                        />
+                                        <Route
+                                            path="/accoutns/orders/:id"
+                                            element={<OrderDetail />}
                                         />
                                     </Route>
 

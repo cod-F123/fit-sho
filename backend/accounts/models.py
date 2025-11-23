@@ -147,3 +147,24 @@ class AddressUser(models.Model):
     def __str__(self):
         return f"{self.user} - {self.title}"
     
+class ResetPasswordOtp(models.Model):
+    phone = models.CharField(max_length=13, verbose_name="شماره")
+    code = models.CharField(max_length=6 , blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    expired_at = models.DateTimeField(blank=True, null=True)
+    is_used = models.BooleanField(default=False)
+    
+    attemps = models.PositiveIntegerField(default=0)
+    
+    def save(self, *args, **kwargs):
+        
+        if self.code is None:
+            self.code = timezone.now().microsecond
+            self.expired_at = timezone.now() + timedelta(minutes=3)
+        
+        super().save(*args, **kwargs)
+            
+            
+    
+    
+    

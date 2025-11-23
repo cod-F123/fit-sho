@@ -70,4 +70,46 @@ class AddressUserSerializer(serializers.ModelSerializer):
         model = AddressUser
         fields = "__all__"
         
+class SendResetOtpSerializer(serializers.Serializer):
+    phone = serializers.CharField(max_length = 13, min_length = 11)
     
+    def validate(self, attrs):
+        user = User.objects.filter(phone = attrs.get("phone")).first()
+        
+        if not user:
+            raise serializers.ValidationError("کاربر با این شماره پیدا نشد")
+        
+        attrs["user"] = user 
+        
+        return attrs
+    
+
+class VerifyResetOtpSerializer(serializers.Serializer):
+    phone = serializers.CharField(max_length = 13, min_length = 11)
+    code = serializers.CharField(max_length = 6)
+    
+    def validate(self, attrs):
+        user = User.objects.filter(phone = attrs.get("phone")).first()
+        
+        if not user :
+            raise serializers.ValidationError("کاربری با این شماره پیدا نشد")
+        
+        attrs["user"] = user
+        
+        return attrs
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    phone = serializers.CharField(max_length = 13, min_length = 11)
+    new_password = serializers.CharField(max_length = 20)
+    
+    
+    def validate(self, attrs):
+        user = User.objects.filter(phone = attrs.get("phone")).first()
+        
+        if not user :
+            raise serializers.ValidationError("کاربری با این شماره پیدا نشد")
+        
+        attrs["user"] = user
+        
+        return attrs    
