@@ -8,6 +8,7 @@ from shop.models import Package ,Product , MealPriceWeek , ExtraOptionPackage , 
 from .models import (Order , PackageOrderItem , PackageOrderItemExtra , ProductOrderItem , ProductOrderItemExtra)
 from .permissions import IsOwnerOrder
 from .filters import OrderFilter
+from accounts.utils import send_message
 
 
 # Create your views here.
@@ -92,6 +93,12 @@ class CartToOrderView(APIView):
                         print(e)
                 
             order.save()
+            
+            try:
+                send_message(order.user.phone,f"سفارش جدید شما با شماره {order.order_number} ثبت شد \n fit-bama \n لغو11 ")
+                
+            except:
+                pass
             
             return Response({"order_id":order.order_id},status=status.HTTP_201_CREATED)
         

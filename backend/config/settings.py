@@ -185,3 +185,7 @@ CKEDITOR_CONFIGS = {
         'extraPlugins': ','.join(['uploadimage', 'image2']),
     },
 }
+
+
+PAYAMAK_APIKEY = os.getenv("API_KEY")
+PAYAMAK_NUMBER = os.getenv("PAYAMAK_NUMBER")

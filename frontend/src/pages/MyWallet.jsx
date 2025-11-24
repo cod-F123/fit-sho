@@ -28,19 +28,18 @@ function MyWallet() {
             });
     }, []);
 
-
-
-    const amounInputOnChange = (e)=>{
-        if (e.target.value > 90_000_000){
+    const amounInputOnChange = (e) => {
+        if (e.target.value > 90_000_000) {
             setAmount(90_000_000);
-
-        }else{
+        } else {
             setAmount(e.target.value);
         }
-    }
+    };
     return (
         <>
-            <Helmet><title>کیف پول | fit bama</title></Helmet>
+            <Helmet>
+                <title>کیف پول | fit bama</title>
+            </Helmet>
             {isLoading ? (
                 <>
                     <div className="w-full top-0 bottom-0 absolute z-50 flex bg-gray-100 justify-center items-center">
@@ -64,26 +63,34 @@ function MyWallet() {
                                         </p>
                                     </div>
                                     <div className="mt-10 w-full flex justify-between items-center">
-                                        <button className="px-3 py-2 rounded-xl border-2 border-white cursor-pointer text-white">
-                                            شارژ کیف پول
-                                        </button>
-                                        <div className="flex md:w-3/4 w-1/2 rounded-lg h-10 md:h-11 border-2 border-box my-3 border-gray-300 relative">
-                                            <span
-                                                className="absolute text-white text-sm  -top-3 bg-gray-800 right-1.5"
-                                                dir="rtl"
-                                            >
-                                                مبلغ شارژ کیف پول
-                                            </span>
-                                            <input
-                                                type={"number"}
-                                                name="ammount"
-                                                id={"22"}
-                                                value={amount}
-                                                onChange={amounInputOnChange}
-                                                className="border-0 text-white pl-3 w-full outline-0"
-                                                placeholder="تومان"
-                                            />
-                                        </div>
+                                        {wallet.is_active ? (
+                                            <>
+                                                <button className="px-3 py-2 rounded-xl border-2 border-white cursor-pointer text-white">
+                                                    شارژ کیف پول
+                                                </button>
+                                                <div className="flex md:w-3/4 w-1/2 rounded-lg h-10 md:h-11 border-2 border-box my-3 border-gray-300 relative">
+                                                    <span
+                                                        className="absolute text-white text-sm  -top-3 bg-gray-800 right-1.5"
+                                                        dir="rtl"
+                                                    >
+                                                        مبلغ شارژ کیف پول
+                                                    </span>
+                                                    <input
+                                                        type={"number"}
+                                                        name="ammount"
+                                                        id={"22"}
+                                                        value={amount}
+                                                        onChange={
+                                                            amounInputOnChange
+                                                        }
+                                                        className="border-0 text-white pl-3 w-full outline-0"
+                                                        placeholder="تومان"
+                                                    />
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <p className="text-center text-red-400 w-full">کیف پول شما غیر فعال است</p>
+                                        )}
                                     </div>
                                 </div>
 
@@ -93,12 +100,53 @@ function MyWallet() {
                                     </p>
                                     {wallet.transactions.map((transaction) => {
                                         return (
-                                            <div key={transaction.id} dir="rtl" className={`col-span-6 w-full relative flex max-h-content mb-0 flex-col md:flex-row items-center justify-between  mt-3 py-7 text-white md:px-5 px-3 rounded-md ${transaction.transaction_type == "deposit" ? 'bg-green-400' : 'bg-red-400'}`}>
-                                                <span>مبلغ : {transaction.amount} تومان</span>
-                                                <span className="mt-1 md:mt-0">نوع تراکنش : {transaction.transaction_type == "deposit" ? <span className="px-3 py-1 rounded-2xl font-sm bg-green-800 text-white">واریز</span> : <span className="bg-red-600 px-2 font-sm py-1 rounded-2xl text-white font-bold">برداشت</span>}</span>
-                                                <span dir="rtl" className="text-center mt-1 md:mt-0">کد پیگیری : {transaction.ref_id}</span>
-                                                <span className="absolute text-sm top-0.5 left-1 text-gray-900" dir="ltr">{transaction.created_at}</span>
-                                                <span className="absolute text-sm bottom-0.5 right-1 text-gray-900" dir="rtl">توضیحات : {transaction.description}</span>
+                                            <div
+                                                key={transaction.id}
+                                                dir="rtl"
+                                                className={`col-span-6 w-full relative flex max-h-content mb-0 flex-col md:flex-row items-center justify-between  mt-3 py-7 text-white md:px-5 px-3 rounded-md ${
+                                                    transaction.transaction_type ==
+                                                    "deposit"
+                                                        ? "bg-green-400"
+                                                        : "bg-red-400"
+                                                }`}
+                                            >
+                                                <span>
+                                                    مبلغ : {transaction.amount}{" "}
+                                                    تومان
+                                                </span>
+                                                <span className="mt-1 md:mt-0">
+                                                    نوع تراکنش :{" "}
+                                                    {transaction.transaction_type ==
+                                                    "deposit" ? (
+                                                        <span className="px-3 py-1 rounded-2xl font-sm bg-green-800 text-white">
+                                                            واریز
+                                                        </span>
+                                                    ) : (
+                                                        <span className="bg-red-600 px-2 font-sm py-1 rounded-2xl text-white font-bold">
+                                                            برداشت
+                                                        </span>
+                                                    )}
+                                                </span>
+                                                <span
+                                                    dir="rtl"
+                                                    className="text-center mt-1 md:mt-0"
+                                                >
+                                                    کد پیگیری :{" "}
+                                                    {transaction.ref_id}
+                                                </span>
+                                                <span
+                                                    className="absolute text-sm top-0.5 left-1 text-gray-900"
+                                                    dir="ltr"
+                                                >
+                                                    {transaction.created_at}
+                                                </span>
+                                                <span
+                                                    className="absolute text-sm bottom-0.5 right-1 text-gray-900"
+                                                    dir="rtl"
+                                                >
+                                                    توضیحات :{" "}
+                                                    {transaction.description}
+                                                </span>
                                             </div>
                                         );
                                     })}

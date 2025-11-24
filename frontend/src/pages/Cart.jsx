@@ -4,6 +4,7 @@ import { BASEURL } from "../service/api";
 import { Helmet } from "react-helmet-async";
 import {useNavigate} from "react-router-dom";
 import api from "../service/api";
+import {AlertContext} from "../contexts/AlertContext";
 
 function Cart() {
     const [isLoading, setIsLoading] = useState(false);
@@ -11,14 +12,19 @@ function Cart() {
 
     const navigate = useNavigate();
 
+    const {setAlert} = useContext(AlertContext);
+
 
     const submitToCreateOrder = ()=>{
+        setIsLoading(true);
         api.post("/payment/cart/",{"cart":cartItems}).then((res)=>{
             clearCart();
             navigate(`/accounts/orders`);
 
         }).catch((error)=>{
-            console.log(error);
+            setAlert("ثبت شفارش شما با مشکل مواجه شد, دقایقی دیگر تلاش کنید")
+        }).finally(()=>{
+            setIsLoading(false);
         })
     };
 

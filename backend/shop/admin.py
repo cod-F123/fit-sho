@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import (Category , Package , Meal , ExtraOptionPackage , MealPriceWeek,
-                     Product, ProductCategory , ExtraOptionProduct, Comment) 
+                     Product, ProductCategory , ExtraOptionProduct, Comment,
+                     SaladItemCategory, SaladItem) 
 
 # Register your models here.
 
@@ -61,3 +62,12 @@ class ProductAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     list_display = ["object_id","author__phone","content_type"]
     search_fields = ["object_id","author__phone",]
+    
+@admin.register(SaladItemCategory)
+class SaladItemCategoryAdmin(admin.ModelAdmin):
+    list_display = ["name",]
+
+@admin.register(SaladItem)
+class SaladItemAdmin(admin.ModelAdmin):
+    list_display = ["name","category__name","price","protein","calories"]
+    search_fields = ["name","category__name"]

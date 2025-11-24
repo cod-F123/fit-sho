@@ -190,3 +190,28 @@ class Comment(models.Model):
         ordering = ["-created_at"]
 
     
+    
+class SaladItemCategory(models.Model):
+    name = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name_plural = "دسته بندی های آیتم سالاد"
+
+
+class SaladItem(models.Model):
+    name = models.CharField(max_length=225, verbose_name="اسم آیتم")
+    price = models.BigIntegerField(default=0,verbose_name="قیمت")
+    category = models.ForeignKey(SaladItemCategory, related_name="salad_items", verbose_name="دسته بندی", on_delete=models.CASCADE)
+    calories = models.CharField(verbose_name="کالری", max_length=10)
+    protein = models.CharField(verbose_name="پروتئین", max_length=10)
+    image = models.ImageField(upload_to="uploads/salad_items", blank=True, null=True)
+    
+    def __str__(self):
+        return f"{self.name} - {self.category.name}"
+    
+    class Meta:
+        verbose_name = "آیتم سالاد"
+        verbose_name_plural = "آیتم های سالاد"

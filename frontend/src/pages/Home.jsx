@@ -18,6 +18,8 @@ import banner2 from "../assets/images/banner2.jpg";
 import banner3 from "../assets/images/banner3.jpg";
 import banner4 from "../assets/images/banner4.jpg";
 import banner5 from "../assets/images/banner5.jpg";
+import salad1 from "../assets/images/salad1.png";
+import salad2 from "../assets/images/salad2.png";
 
 function Home() {
     return (
@@ -120,8 +122,19 @@ function Home() {
                 </div>
 
                 <PackagesSlider />
-                <br />
-                <br />
+
+                <Link to={"/products"} className="col-span-12 my-5 rounded-2xl flex  justify-between bg-green-50 p-2 md:p-5">
+                    <div className="flex justify-start gap-5">
+                        <img src={salad1} loading="lazy" className="w-36 lg:w-40" alt="salad" />
+                        <img src={salad2} loading="lazy" className="w-0 lg:w-40" alt="salad" />
+                    </div>
+                    
+                    <div>
+                        <h2 className="font-bold text-2xl text-right md:text-4xl text-green-900">سالاد خودتو بساز</h2>
+                        <p className="text-lg md:text-xl text-green-600 text-right mt-8">می تونی با هرچیزی که دوست داری سالاد خودتو بسازی</p>
+                    </div>
+                </Link>
+
                 <ProductSlider />
             </div>
         </>

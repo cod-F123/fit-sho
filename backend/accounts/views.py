@@ -15,6 +15,8 @@ from rest_framework import status
 from django.contrib.auth.hashers import make_password
 
 from rest_framework_simplejwt.tokens import RefreshToken
+from .utils import send_message
+
 # Create your views here.
 
 
@@ -33,17 +35,26 @@ class RegisterUserView(APIView):
         
         if user_serializer.is_valid():
             user = user_serializer.save()
-            UserOtpCode.objects.create(user= user)
+            otp = UserOtpCode.objects.create(user= user)
             
             refresh = RefreshToken.for_user(user)
+             
+            res = send_message(user.phone,f'کد تائید : {otp.otp_code} \n fit-bama \n لغو11 ')
             
-            return Response({
-                "user":UserViewSerializer(instance=user).data,
-                "token" : {
-                    "access" : str(refresh.access_token),
-                    "refresh" : str(refresh)
-                }
-            },status=status.HTTP_201_CREATED)
+            if res.get("status") == "ارسال موفق بود":
+                
+            
+            
+                return Response({
+                    "user":UserViewSerializer(instance=user).data,
+                    "token" : {
+                        "access" : str(refresh.access_token),
+                        "refresh" : str(refresh)
+                    }
+                },status=status.HTTP_201_CREATED)
+            else:
+                User.objects.get(phone = user.phone).delete()
+                return Response(status=status.HTTP_400_BAD_REQUEST)
             
         
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -71,7 +82,11 @@ class ValidateUser(APIView):
 
         if otp_obj.expire_date < timezone.now():
             otp_obj.delete()
-            UserOtpCode.objects.create(user=request.user)
+            new_otp = UserOtpCode.objects.create(user=request.user)
+            try:
+                send_message(otp_obj.user.phone,f'کد تائید : {new_otp.otp_code} \n fit-bama \n لغو11 ')
+            except:
+                pass
             return Response(
                 {"message": "کد منقضی شده بود، مجدداً ارسال شد."},
                 status=status.HTTP_400_BAD_REQUEST
@@ -185,6 +200,11 @@ class SendResetOtpView(APIView):
                 last_reset_otp.delete()
             
             new_reset_otp = ResetPasswordOtp.objects.create(phone = serializer.validated_data["phone"])
+            
+            try:
+                send_message(new_reset_otp.phone,f'کد تائید : {new_reset_otp.code} \n fit-bama \n لغو11 ')
+            except:
+                pass
             
             return Response({"message":"کد ارسال شد"},status=status.HTTP_200_OK)
         
