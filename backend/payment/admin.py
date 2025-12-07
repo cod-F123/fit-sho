@@ -1,7 +1,17 @@
 from django.contrib import admin
-from .models import (Order, PackageOrderItem , PackageOrderItemExtra, ProductOrderItem, ProductOrderItemExtra,Transaction)
+from .models import (Order, SaladOrder, SaladItemOrderItem, PackageOrderItem , PackageOrderItemExtra, ProductOrderItem, ProductOrderItemExtra,Transaction)
 
 # Register your models here.
+
+class SaladItemOrderItemAdmin(admin.TabularInline):
+    model = SaladItemOrderItem
+    extra = 0
+    
+class SaladOrderInline(admin.TabularInline):
+    model = SaladOrder
+    extra = 0
+    readonly_fields = ("amount",)
+    show_change_link = True
 
 class PackageOrderItemExtraInline(admin.TabularInline):
     model = PackageOrderItemExtra
@@ -33,9 +43,15 @@ class OrderAdmin(admin.ModelAdmin):
 
     inlines = [
         PackageOrderItemInline,
-        ProsuctOrderItemInline
+        ProsuctOrderItemInline,
+        SaladOrderInline
     ]
     
+@admin.register(SaladOrder)
+class SaladOrderAdmoin(admin.ModelAdmin):
+    list_display = ("id","order","amount")  
+    inlines = [SaladItemOrderItemAdmin]
+
 @admin.register(PackageOrderItem)
 class PackageOrderItemAdmin(admin.ModelAdmin):
     list_display = ("id", "order", "package", "meal_pricing", "amount")

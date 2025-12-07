@@ -6,4 +6,5 @@ urlpatterns = [
     path("getPackage/<str:slug>/", views.GetPackage.as_view()),
     path("getProducts/", views.GetProductsAndCategories.as_view()),
     path("getProduct/<str:slug>/", views.GetProduct.as_view()),
+    path("getSaladItems/", views.GetSaladItems.as_view()),
 ]

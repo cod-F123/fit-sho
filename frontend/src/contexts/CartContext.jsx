@@ -10,10 +10,16 @@ export const CartProvider = ({children})=>{
         return saved ? JSON.parse(saved) :[];
     });
 
+    const [saladItems, setSaladItems] = useState(()=>{
+        const saved = localStorage.getItem("saladItems");
+        return saved ? JSON.parse(saved) : [];
+    })
+
 
     useEffect(()=>{
         localStorage.setItem("cart", JSON.stringify(cartItems));
-    },[cartItems,]);
+        localStorage.setItem("saladItems",JSON.stringify(saladItems))
+    },[cartItems,saladItems]);
 
     const addToCart = (product, qty=1,total_price,isPackage,extra_options=[],allergies=[],selectedMeal="",weeks="")=>{
         setCartItems((prev)=>{
@@ -27,10 +33,27 @@ export const CartProvider = ({children})=>{
         });
     };
 
+    const addToSalad = (id)=>{
+        setSaladItems((prev)=>{
+            const existing = prev.find((item)=>item === id);
+
+            if (!existing){
+                return [...prev,id];
+            }
+        })
+    }
+
     const removeFromCart = (productId)=> {
         setCartItems((prev)=> prev.filter((item)=> item.slug !== productId));
     }
 
+    const removeFromSalad = (id) => {
+        setSaladItems((prev)=> prev.filter((item)=> item !== id));
+    }
+
+    const existingIteminSalad = (id)=>{
+        return saladItems.find((item) => item === id);
+    }
 
     const existProductInCart = (productId)=> {
         return cartItems.find((item) => item.slug === productId);
@@ -45,9 +68,10 @@ export const CartProvider = ({children})=>{
     }
 
     const clearCart = ()=> setCartItems([]);
+    const clearSalad = ()=> setSaladItems([]);
 
     return <>
-        <CartContext.Provider value={{cartItems, addToCart, existProductInCart, removeFromCart, clearCart, totalPrice}} >
+        <CartContext.Provider value={{cartItems, addToCart, existProductInCart, removeFromCart, clearCart, totalPrice, saladItems, addToSalad, existingIteminSalad, removeFromSalad, clearSalad}} >
             {children}
         </CartContext.Provider>
     </>

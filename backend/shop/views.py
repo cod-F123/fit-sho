@@ -2,9 +2,9 @@ from django.shortcuts import render , get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework. permissions import IsAuthenticatedOrReadOnly
-from .models import Package , Meal , Product , ProductCategory , Comment
-from .serializers import PackageSerializer , ProductSerializer , CategoryProductSerializer , CommentSerializer
-from .filters import ProductFilter
+from .models import Package , Meal , Product , ProductCategory , Comment, SaladItemCategory , SaladItem
+from .serializers import (PackageSerializer , ProductSerializer , CategoryProductSerializer , CommentSerializer,SaladItemCategorySerializer, SaladItemSerializer)
+from .filters import ProductFilter , ItemFilter
 from django.contrib.contenttypes.models import ContentType
 from rest_framework import status
 # Create your views here.
@@ -90,3 +90,19 @@ class GetProduct(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
         return Response({"message":"comment content required"},status=status.HTTP_400_BAD_REQUEST)
+    
+
+class GetSaladItems(APIView):
+    
+    def get(self, request, format= None):
+        salad_item_categories = SaladItemCategory.objects.all()
+        
+        category_serializer = SaladItemCategorySerializer(salad_item_categories, many=True)
+        
+        salad_items = SaladItem.objects.all()
+        
+        salad_item_filter = ItemFilter(request.GET,queryset=salad_items)
+        
+        items_serializer = SaladItemSerializer(salad_item_filter.qs, many=True)
+        
+        return Response({"categories":category_serializer.data,"items":items_serializer.data}, status = status.HTTP_200_OK)

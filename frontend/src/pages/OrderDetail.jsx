@@ -1,20 +1,23 @@
 import api, { BASEURL } from "../service/api";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { AuthContext } from "../contexts/AuthContext";
 
 function OrderDetail() {
     const [order, setOrder] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [userAddresses, setUserAddresses] = useState([]);
-    const [selectedAddress, setSelectedAddress] = useState("");
+    const [selectedAddress, setSelectedAddress] = useState({});
 
     const params = useParams();
     const navigate = useNavigate();
+    const { user } = useContext(AuthContext);
 
     useEffect(() => {
         api.get(`/payment/orders/${params.id}/`)
+
             .then((res) => {
                 setOrder(res.data);
 
@@ -31,6 +34,41 @@ function OrderDetail() {
                 navigate("404");
             });
     }, []);
+
+    const startPay = () => {
+        setIsLoading(true);
+        let address = `${selectedAddress.address} \n کدپستی :${selectedAddress.zip_code}`;
+
+        api.post("/payment/startPayment/", {
+            order_id: order.order_id,
+            address: address,
+        })
+            .then((res) => {
+                window.location.href = res.data.pay_url;
+            })
+            .catch((error) => {
+                console.log(error);
+                setIsLoading(false);
+            });
+    };
+
+    const payWithWallet = () => {
+        setIsLoading(true);
+        let address = `${selectedAddress.address} \n کدپستی :${selectedAddress.zip_code}`;
+
+        api.post("/payment/payWithWallet/", {
+            order_id: order.order_id,
+            address: address,
+        })
+            .then((res) => {
+                setOrder(res.data.order);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                console.log(error);
+                setIsLoading(false);
+            });
+    };
 
     return (
         <>
@@ -58,7 +96,7 @@ function OrderDetail() {
                             className="grid grid-cols-12 md:gap-5 place-content-between"
                             dir="rtl"
                         >
-                            <div className="md:col-span-7 mb-5 col-span-12 grid grid-cols-6">
+                            <div className="md:col-span-7 mb-5 col-span-12 gap-5 grid grid-cols-6">
                                 {order.order_items.map((item) => {
                                     return (
                                         <div
@@ -214,6 +252,38 @@ function OrderDetail() {
                                         </div>
                                     );
                                 })}
+
+                                {order.salads_order?.salad_items.map((item) => {
+                                    return (
+                                        <div
+                                            key={item.id}
+                                            className="col-span-6 sm:col-span-3 max-h-content rounded-md mb-5  bg-gray-100 p-2 md:p-5 "
+                                        >
+                                            <div className="flex flex-col mb-2 md:mb-5 ">
+                                                <div className=" w-full">
+                                                    <img
+                                                        src={`${BASEURL}/${item.item.image}`}
+                                                        className="rounded-lg object-center max-h-40 w-full object-cover object-cente"
+                                                        alt={item.item.name}
+                                                    />
+                                                </div>
+                                                <div className="w-full flex justify-between mt-5 items-center flex-row text-center">
+                                                    <h2 className="font-bold">
+                                                        آیتم {item.item.name}
+                                                    </h2>
+
+                                                    <p
+                                                        dir="rtl"
+                                                        className="font-medium"
+                                                    >
+                                                        قیمت :{item.item.price}{" "}
+                                                        تومان
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
                             <div className="md:col-span-5 col-span-12">
                                 <div className="flex flex-row  items-center justify-between p-3 md:p-5 rounded-md bg-white">
@@ -254,7 +324,7 @@ function OrderDetail() {
                                         {order.amount} تومان
                                     </span>
                                 </div>
-                                {order.status == "pending" ?  (
+                                {order.status == "pending" ? (
                                     <>
                                         <div className="flex flex-col mt-5 pb-1">
                                             <p className="text-right font-bold">
@@ -275,12 +345,12 @@ function OrderDetail() {
                                                             <div
                                                                 onClick={() => {
                                                                     setSelectedAddress(
-                                                                        address.id
+                                                                        address
                                                                     );
                                                                 }}
                                                                 className={`col-span-12 cursor-pointer rounded-md border-2 flex flex-col justify-center items-center py-6 font-medium text-sm transition-all ${
                                                                     address.id ===
-                                                                    selectedAddress
+                                                                    selectedAddress.id
                                                                         ? "bg-gray-400 border-amber-100 text-black shadow-md"
                                                                         : " bg-gray-200 border-amber-50 hover:border-amber-200"
                                                                 }`}
@@ -295,15 +365,42 @@ function OrderDetail() {
                                             })}
                                         </div>
                                         <div className="flex flex-col mt-5 p-2 md:p-5 rounded-md bg-white">
-                                            <button
-                                                onClick={() => {}}
-                                                className="bg-green-500 mb-2 w-full text-white px-4 py-4 rounded-md cursor-pointer transition-all ease-in border-2 duration-150 hover:shadow-md border-green-500 hover:bg-white hover:text-green-500"
-                                            >
-                                                پرداخت
-                                            </button>
+                                            {selectedAddress.id ? (
+                                                <>
+                                                    <button
+                                                        onClick={() => {
+                                                            startPay();
+                                                        }}
+                                                        className="bg-green-500 mb-2 w-full text-white px-4 py-4 rounded-md cursor-pointer transition-all ease-in border-2 duration-150 hover:shadow-md border-green-500 hover:bg-white hover:text-green-500"
+                                                    >
+                                                        پرداخت
+                                                    </button>
+                                                    {user.wallet.amount >=
+                                                    order.amount ? (
+                                                        <>
+                                                            <button
+                                                                onClick={() => {payWithWallet()}}
+                                                                className="bg-blue-500 mb-2 w-full text-white px-4 py-4 rounded-md cursor-pointer transition-all ease-in border-2 duration-150 hover:shadow-md border-blue-500 hover:bg-white hover:text-blue-500"
+                                                            >
+                                                                پرداخت با کیف
+                                                                پول
+                                                            </button>
+                                                        </>
+                                                    ) : null}
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <h3 className="text font-bold text-center">
+                                                        ابتدا آدرس خود را انتخاب
+                                                        کنید
+                                                    </h3>
+                                                </>
+                                            )}
                                         </div>
                                     </>
-                                ) : ""}
+                                ) : (
+                                    ""
+                                )}
                             </div>
                         </div>
                     </div>

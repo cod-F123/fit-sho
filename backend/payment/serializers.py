@@ -1,10 +1,12 @@
 from rest_framework import serializers
-from .models import (Order, PackageOrderItem, PackageOrderItemExtra, ProductOrderItem, ProductOrderItemExtra)
-from shop.serializers import (ExtraOptionPackageSerializer , PackageSerializer , MealPriceWeekSerializer , ExtraOptionProductSerializer, ProductSerializer)
+from .models import (Order, PackageOrderItem, PackageOrderItemExtra, ProductOrderItem, ProductOrderItemExtra, SaladOrder, SaladItemOrderItem)
+from shop.serializers import (ExtraOptionPackageSerializer , PackageSerializer , MealPriceWeekSerializer , ExtraOptionProductSerializer, ProductSerializer,SaladItemSerializer)
 
 class CartSerializer(serializers.Serializer):
     cart = serializers.ListField()
-    
+
+class SaladSerializer(serializers.Serializer):
+    salad_items = serializers.ListField()
     
 class PackageOrderItemExtraSerializer(serializers.ModelSerializer):
     
@@ -41,12 +43,27 @@ class ProductOrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductOrderItem
         fields = "__all__"
+
+class SaladItemOrderItemSerializer(serializers.ModelSerializer):
+    item = SaladItemSerializer(read_only=True)
+    
+    class Meta:
+        model = SaladItemOrderItem
+        fields = "__all__"
+
+class SaladOrderSerializer(serializers.ModelSerializer):
+    salad_items = SaladItemOrderItemSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = SaladOrder
+        fields = "__all__"
         
 
 class Orderserializer(serializers.ModelSerializer):
     
     order_items = PackageOrderItemSerializer(many=True, read_only=True)
     product_order_items = ProductOrderItemSerializer(many=True, read_only=True)
+    salads_order = SaladOrderSerializer(read_only=True)
     create_at = serializers.DateTimeField(format="%Y/%m/%d %H:%M:%S")
     payed_at = serializers.DateTimeField(format="%Y/%m/%d %H:%M:%S")
     completed_at = serializers.DateTimeField(format="%Y/%m/%d %H:%M:%S")
@@ -54,3 +71,17 @@ class Orderserializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = "__all__"
+        
+        
+class StartPaySerializer(serializers.Serializer):
+    
+    order_id = serializers.CharField()
+    
+    address = serializers.CharField()
+
+class TransactionAmountSerializer(serializers.Serializer):
+    amount = serializers.IntegerField()
+    
+    
+    
+    

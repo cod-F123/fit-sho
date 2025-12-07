@@ -34,9 +34,9 @@ function ListOrder() {
                 <>
                     {" "}
                     <div className="min-h-screen bg-gray-300 w-full px-7 sm:px-11 lg:px-20 md:gap-10 pb-5 mt-5 pt-8">
-                        <div className="grid grid-cols-12 md:gap-5">
+                        <div className="grid grid-cols-12 md:gap-5 ">
                             <div className="md:col-span-8 col-span-12 grid grid-cols-6">
-                                <div className="col-span-6 grid grid-cols-6 max-h-content mb-0  bg-gray-800  rounded-md">
+                                <div className="col-span-6 mb-24 grid grid-cols-6 max-h-content bg-gray-800  rounded-md">
                                     <div onClick={()=>{setFilter("processing")}} className={`col-span-2 py-6 flex justify-center items-center text-white rounded-bl-md rounded-tl-md cursor-pointer hover:bg-gray-500 transition-colors duration-200 ${filter === "processing" ? "bg-gray-500" :"" }`}>جاری</div>
                                     <div onClick={()=>{setFilter("completed")}} className={`col-span-2 py-6 flex justify-center items-center text-white cursor-pointer hover:bg-gray-500 transition-colors duration-200 ${filter === "completed" ? "bg-gray-500" :"" }`}>تکمیل شده</div>
                                     <div onClick={()=>{setFilter("pending")}} className={`col-span-2 py-6 flex justify-center items-center text-white rounded-br-md rounded-tr-md cursor-pointer hover:bg-gray-500 transition-colors duration-200 ${filter === "pending" ? "bg-gray-500" :"" }`}>درانتظار پرداخت</div>

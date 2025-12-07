@@ -31,6 +31,8 @@ import OrderDetail from "./pages/OrderDetail";
 import ChangePassword from "./pages/ChangePassword";
 import ForgotePassword from "./pages/ForgotePassword";
 
+import MakeSalad from "./pages/MakeSalad";
+
 function App() {
     return (
         <>
@@ -42,6 +44,7 @@ function App() {
                                 <Route path="/" element={<AppLayout />}>
                                     <Route index element={<Home />} />
                                     <Route path="/cart" element={<Cart />} />
+                                    <Route path="/makeSalad" element={<MakeSalad />} />
                                     <Route
                                         path="/contactUs"
                                         element={<ContactUs />}
@@ -111,7 +114,7 @@ function App() {
                                             element={<ListOrder />}
                                         />
                                         <Route
-                                            path="/accoutns/orders/:id"
+                                            path="/accounts/orders/:id"
                                             element={<OrderDetail />}
                                         />
                                     </Route>

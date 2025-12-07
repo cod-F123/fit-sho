@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import (Package , Meal , ExtraOptionPackage , MealPriceWeek,
-                     Product , ProductCategory, ExtraOptionProduct, Comment)
+                     Product , ProductCategory, ExtraOptionProduct, Comment,
+                     SaladItem, SaladItemCategory)
 
 from accounts.models import User
 
@@ -60,4 +61,16 @@ class ProductSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Product
+        fields = "__all__"
+        
+class SaladItemSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = SaladItem
+        fields = "__all__"
+        
+    
+class SaladItemCategorySerializer(serializers.ModelSerializer):    
+    class Meta:
+        model = SaladItemCategory
         fields = "__all__"

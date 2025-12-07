@@ -46,22 +46,6 @@ class WalletTransaction(models.Model):
             
             self.ref_id = str(uuid.uuid4()).replace("-", "")
 
-            
-            with transaction.atomic():
-                
-                if self.transaction_type == "deposit":
-                    self.wallet.amount += self.amount
-                    self.wallet.save()
-
-                
-                elif self.transaction_type == "withdraw":
-                    if self.wallet.amount >= self.amount:
-                        self.wallet.amount -= self.amount
-                        self.wallet.save()
-                    else:
-                        self.description = (self.description or "") + " (تراکنش ناموفق: موجودی کافی نیست)"
-                        self.amount = 0  
-
         super().save(*args, **kwargs)
         
         
@@ -75,3 +59,22 @@ class WalletTransaction(models.Model):
         ordering = ["-created_at"]
 
     
+def update_wallet(sender, instance, created, **kwargs):
+    if created :
+        
+        with transaction.atomic():
+                
+            if instance.transaction_type == "deposit":
+                instance.wallet.amount += instance.amount
+                instance.wallet.save()
+
+            
+            elif instance.transaction_type == "withdraw":
+                if instance.wallet.amount >= instance.amount:
+                    instance.wallet.amount -= instance.amount
+                    instance.wallet.save()
+                else:
+                    instance.description = (instance.description or "") + " (تراکنش ناموفق: موجودی کافی نیست)"
+                    instance.amount = 0  
+        
+post_save.connect(update_wallet, sender=WalletTransaction)

@@ -25,7 +25,7 @@ function Home() {
     return (
         <>
             <Helmet>
-                <title>fit bama</title>
+                <title>27534520</title>
             </Helmet>
             <div className="grid grid-cols-12 mx-2 md:mx-20 my-4 mt-7">
                 <div className="col-span-12 mt-5">
@@ -123,7 +123,7 @@ function Home() {
 
                 <PackagesSlider />
 
-                <Link to={"/products"} className="col-span-12 my-5 rounded-2xl flex  justify-between bg-green-50 p-2 md:p-5">
+                <Link to={"/makeSalad"} className="col-span-12 my-5 rounded-2xl flex  justify-between bg-green-50 p-2 md:p-5">
                     <div className="flex justify-start gap-5">
                         <img src={salad1} loading="lazy" className="w-36 lg:w-40" alt="salad" />
                         <img src={salad2} loading="lazy" className="w-0 lg:w-40" alt="salad" />

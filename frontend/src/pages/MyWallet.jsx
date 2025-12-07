@@ -35,6 +35,19 @@ function MyWallet() {
             setAmount(e.target.value);
         }
     };
+
+
+    const startChargeWallet = ()=>{
+        setIsLoading(true);
+        api.post("/payment/startChargeWallet/",{"amount":amount}).then((res)=>{
+            console.log(res.data);
+            window.location.href = res.data.pay_url;
+        }).catch((error)=>{
+            console.log(error);
+            setIsLoading(false);
+        })
+    }
+
     return (
         <>
             <Helmet>
@@ -65,7 +78,7 @@ function MyWallet() {
                                     <div className="mt-10 w-full flex justify-between items-center">
                                         {wallet.is_active ? (
                                             <>
-                                                <button className="px-3 py-2 rounded-xl border-2 border-white cursor-pointer text-white">
+                                                <button onClick={()=>{startChargeWallet()}} className="px-3 py-2 rounded-xl border-2 border-white cursor-pointer text-white">
                                                     شارژ کیف پول
                                                 </button>
                                                 <div className="flex md:w-3/4 w-1/2 rounded-lg h-10 md:h-11 border-2 border-box my-3 border-gray-300 relative">

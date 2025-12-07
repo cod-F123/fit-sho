@@ -1,9 +1,9 @@
 from django.db import models
 from django.utils import timezone
 from accounts.models import User
-from shop.models import Package, Product, MealPriceWeek, Meal, ExtraOptionPackage , ExtraOptionProduct
+from wallet.models import Wallet
+from shop.models import Package, Product, MealPriceWeek, Meal, ExtraOptionPackage , ExtraOptionProduct, SaladItem
 import uuid
-
 
 # Create your models here.
 
@@ -65,6 +65,7 @@ class OrderItem(models.Model):
     
     class Meta:
         abstract = True
+    
 
 class PackageOrderItem(OrderItem):
     package = models.ForeignKey(Package, on_delete=models.CASCADE)
@@ -100,7 +101,30 @@ class ProductOrderItem(OrderItem):
 class ProductOrderItemExtra(models.Model):
     item = models.ForeignKey(ProductOrderItem, on_delete=models.CASCADE , related_name="extra_items")
     option = models.ForeignKey(ExtraOptionProduct, on_delete=models.CASCADE)
-        
+
+
+class SaladOrder(OrderItem):
+    order = models.OneToOneField(Order, related_name="salads_order", on_delete=models.CASCADE, verbose_name="سفارش")
+    items = models.ManyToManyField(SaladItem, through="SaladItemOrderItem", related_name="salad_items", verbose_name="آیتم های سالاد")
+
+class SaladItemOrderItem(models.Model):
+    salad = models.ForeignKey(SaladOrder, related_name="salad_items", on_delete=models.CASCADE)
+    item = models.ForeignKey(SaladItem, verbose_name="آیتم سالاد", on_delete=models.CASCADE)
+    
+
+class WalletOrder(models.Model):
+    wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE, related_name="wallet_orders")
+    amount = models.BigIntegerField(default=0)
+    
+    STATUS = (
+        ("payed","پرداخت شده"),
+        ("pending", "در انتظار پرداخت")
+    )
+    
+    transaction_token = models.CharField(verbose_name="توکن تراکنش", max_length=255, blank=True, null=True)
+    
+
+
     
     
     

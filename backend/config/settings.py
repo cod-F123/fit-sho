@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = [os.getenv("ORIGIN_DOMAIN"),]
+# CSRF_TRUSTED_ORIGINS = [os.getenv("ORIGIN_DOMAIN"),]
 
 # Application definition
 
@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'accounts',
     'wallet',
     'payment',
+    'shipping',
     
     # Rest
     'rest_framework',
@@ -141,7 +142,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+# STATICFILES_DIRS = [
+#     BASE_DIR/"static",
+# ]
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
@@ -189,3 +193,22 @@ CKEDITOR_CONFIGS = {
 
 PAYAMAK_APIKEY = os.getenv("API_KEY")
 PAYAMAK_NUMBER = os.getenv("PAYAMAK_NUMBER")
+
+
+# Payment Config
+CALLBACK_URL = os.getenv("CALLBACK_URL")
+MERCHANT_ID =  os.getenv("MERCHANT_ID")
+REDIRECT_URL_PAY  = os.getenv("REDIRECT_URL_PAY")
+SECONDARY_CALLBACK_URL = os.getenv("SECONDARY_CALLBACK_URL")
+
+SANDBOX = True
+
+if SANDBOX == True:
+    ZP_API_REQUEST = "https://sandbox.zarinpal.com/pg/v4/payment/request.json"
+    ZP_API_VERIFY = "https://sandbox.zarinpal.com/pg/v4/payment/verify.json"
+    ZP_API_STARTPAY = "https://sandbox.zarinpal.com/pg/StartPay/"
+
+else :
+    ZP_API_REQUEST = "https://payment.zarinpal.com/pg/v4/payment/request.json"
+    ZP_API_VERIFY = "https://payment.zarinpal.com/pg/v4/payment/verify.json"
+    ZP_API_STARTPAY = "https://payment.zarinpal.com/pg/StartPay/"

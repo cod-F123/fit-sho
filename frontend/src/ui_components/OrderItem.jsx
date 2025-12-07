@@ -20,7 +20,7 @@ function OrderItem({ order }) {
                 <div className="flex gap-1 lg:gap-20 items-end md:items-center flex-col md:flex-row-reverse">
                   <span className="text-sm font-bold">تاریخ سفارش :  {order.create_at}</span>
                   <span className="text-sm font-bold">مبلغ سفارش : {order.amount} تومان</span>
-                  <Link to={`/accoutns/orders/${order.order_id}`} className="text-sm text-blue-500 font-bold">شماره سفارش : #{order.order_number}</Link>
+                  <Link to={`/accounts/orders/${order.order_id}`} className="text-sm text-blue-500 font-bold">شماره سفارش : #{order.order_number}</Link>
                 </div>
             </div>
         </>
