@@ -25,6 +25,7 @@ urlpatterns = [
     path('shop/', include("shop.urls")),
     path('wallet/', include("wallet.urls")),
     path("payment/", include("payment.urls")),
+    path("shipment/", include("shipping.urls")),
     path('ckeditor/', include('ckeditor_uploader.urls')), # text editor
 
 ]

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @font-face {
     font-family: Vazir;
-    src: url("./assets/fonts/Vazir.ttf");
+    src: url("./assets/fonts/Vazirmatn-Regular.woff2");
 }
 
 * {
@@ -107,4 +107,9 @@ input::-webkit-inner-spin-button {
 
 input[type=number] {
     -moz-appearance: textfield;
+}
+
+
+.max-w-content{
+    width: max-content !important;
 }

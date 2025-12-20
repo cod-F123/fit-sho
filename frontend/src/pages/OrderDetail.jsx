@@ -1,15 +1,18 @@
 import api, { BASEURL } from "../service/api";
+import { PackageIcon , CalendarDays } from "lucide-react";
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { AuthContext } from "../contexts/AuthContext";
+import ShipmentItem from "../ui_components/ShipmentItem";
 
 function OrderDetail() {
     const [order, setOrder] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [userAddresses, setUserAddresses] = useState([]);
     const [selectedAddress, setSelectedAddress] = useState({});
+    const [shipments, setShipments] = useState([]);
 
     const params = useParams();
     const navigate = useNavigate();
@@ -26,6 +29,24 @@ function OrderDetail() {
                         setUserAddresses(res.data);
                     })
                     .catch((error) => {});
+
+                res.data.order_items.map((item) => {
+                    api.get(`/shipment/getShipments/${item.id}/`)
+                        .then((response) => {
+                            setShipments((prev) => {
+                                const isExist = prev.find(
+                                    (item_m) => item_m.id === response.data.id
+                                );
+                                if (!isExist) {
+                                    return [...prev, response.data];
+                                }
+
+                                return prev;
+                            });
+                        })
+                        .catch((error3) => {
+                        });
+                });
 
                 setIsLoading(false);
             })
@@ -176,6 +197,24 @@ function OrderDetail() {
                                                 )}
                                             </div>
                                         </div>
+                                    );
+                                })}
+
+                                {shipments.map((shipment) => {
+                                    return (
+                                        <>
+                                            <div key={shipment.id} className="bg-white rounded-md flex gap-10 text-right font-bold p-5 col-span-6">
+                                                ارسالی های بسته {shipment.package_items.package.name} <PackageIcon/> <span className="inline-flex">شروع ارسال  : {shipment.start_date} <CalendarDays /></span>
+                                            </div>
+                                            {shipment.days.map((day) => {
+                                                return (
+                                                    <ShipmentItem
+                                                        key={day.id}
+                                                        item={day}
+                                                    />
+                                                );
+                                            })}
+                                        </>
                                     );
                                 })}
                                 {order.product_order_items.map((item) => {
@@ -379,7 +418,9 @@ function OrderDetail() {
                                                     order.amount ? (
                                                         <>
                                                             <button
-                                                                onClick={() => {payWithWallet()}}
+                                                                onClick={() => {
+                                                                    payWithWallet();
+                                                                }}
                                                                 className="bg-blue-500 mb-2 w-full text-white px-4 py-4 rounded-md cursor-pointer transition-all ease-in border-2 duration-150 hover:shadow-md border-blue-500 hover:bg-white hover:text-blue-500"
                                                             >
                                                                 پرداخت با کیف
@@ -399,7 +440,31 @@ function OrderDetail() {
                                         </div>
                                     </>
                                 ) : (
-                                    ""
+                                    <div className="flex flex-col mt-5 pb-1">
+                                            <p className="text-right font-bold">
+                                                آدرس تحویل
+                                            </p>
+                                            
+                                                    <div
+                                                       
+                                                        className="flex mt-5 flex-col p-2 md:p-5 rounded-md bg-white"
+                                                    >
+                                                        <div className="flex items-center justify-between text-sm font-bold">
+                                                            
+                                                        </div>
+                                                        <div className="grid grid-cols-12 gap-1 md:gap-3 mt-2 md:mt-5">
+                                                            <div
+                                                                
+                                                                className={`col-span-12 cursor-pointer rounded-md border-2 flex flex-col justify-center items-center py-6 font-medium text-sm transition-all " bg-gray-200 border-amber-50 hover:border-amber-200" `}
+                                                            >
+                                                                {
+                                                                    order.address
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            
+                                        </div>
                                 )}
                             </div>
                         </div>

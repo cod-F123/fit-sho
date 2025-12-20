@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import CartSerializer, Orderserializer, SaladSerializer, StartPaySerializer, TransactionAmountSerializer
+from .serializers import CartSerializer, Orderserializer, SaladSerializer, StartPaySerializer, TransactionAmountSerializer, TransactionSerializer
 from shop.models import Package ,Product , MealPriceWeek , ExtraOptionPackage , ExtraOptionProduct, SaladItem
 from .models import (Order, WalletOrder, SaladOrder, SaladItemOrderItem, PackageOrderItem , PackageOrderItemExtra , ProductOrderItem , ProductOrderItemExtra, Transaction)
 from .permissions import IsOwnerOrder
@@ -39,14 +39,14 @@ def create_shipping_schedule(order):
         shipment = ShipmentOrder.objects.create(
             package_items=package_item,
             total_days=total_days,
-            start_date=timezone.now().date()
+            start_date=timezone.now().date() + timedelta(days=1)
         )
 
         # ساخت روزهای ارسال
         for i in range(total_days):
             ShipmentDay.objects.create(
                 shipment=shipment,
-                date=timezone.now().date() + timedelta(days=i)
+                date=shipment.start_date + timedelta(days=i)
             )
 
 # Get Cart from client and create a order
@@ -484,3 +484,16 @@ class PayWithWallet(APIView):
             return Response({"order":order_serialiser.data},status=status.HTTP_200_OK)
         
         return Response(start_pay_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+class TransactionsView(APIView):
+    permission_classes = [IsAuthenticated,]
+    
+    def get(self, request, format= None):
+        
+        transactions = Transaction.objects.filter(user = request.user).order_by("-create_at")
+        
+        serializer = TransactionSerializer(transactions, many=True)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)

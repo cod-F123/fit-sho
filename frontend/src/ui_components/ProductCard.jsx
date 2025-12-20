@@ -17,9 +17,8 @@ function ProductCard({ product }) {
                     if (entry.isIntersecting) {
                         
                         animate(".productCard", {
-                            translateY: [300, 0],
-                            translateX: [300, 0],
-                            scale: [0.5, 1],
+                            opacity : [0.5,1],
+                            scale : [0.8,1]
                         });
                         observer.unobserve(ref.current);
                     }

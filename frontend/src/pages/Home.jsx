@@ -20,6 +20,10 @@ import banner4 from "../assets/images/banner4.jpg";
 import banner5 from "../assets/images/banner5.jpg";
 import salad1 from "../assets/images/salad1.png";
 import salad2 from "../assets/images/salad2.png";
+import baste from "../assets/images/baste.png";
+import sefaresh from "../assets/images/sefaresh.png";
+import shopImg from "../assets/images/shop.png";
+import booksimg from "../assets/images/books.png";
 
 function Home() {
     return (
@@ -70,9 +74,9 @@ function Home() {
                     </Swiper>
                 </div>
                 <div className="col-span-12 grid grid-cols-12 gap-5 my-5">
-                    <Link className="md:col-span-3 col-span-6 rounded-md bg-gray-400 flex flex-col justify-center items-center p-5">
+                    <Link className="md:col-span-3 col-span-6 rounded-md transition-all ease-in duration-200 bg-gray-400 flex flex-col justify-center items-center p-5">
                         <img
-                            src="https://getjoule.co/assets/images/home_icon/d3dfa52f4519cacefbb74f2a32035563.png"
+                            src={booksimg}
                             className="w-24 rounded-full cursor-pointer hover:bg-gray-200 p-3"
                             alt="cat"
                         />
@@ -82,10 +86,10 @@ function Home() {
                     </Link>
                     <Link
                         to={"/products"}
-                        className="md:col-span-3 col-span-6 rounded-md bg-gray-400 flex flex-col justify-center items-center p-5"
+                        className="md:col-span-3 col-span-6 rounded-md transition-all ease-in duration-200 bg-gray-400 flex flex-col justify-center items-center p-5"
                     >
                         <img
-                            src="https://getjoule.co/assets/images/home_icon/c1d089450ed839fa99e53cbafd5cd4ee.png"
+                            src={shopImg}
                             className="w-24 rounded-full cursor-pointer hover:bg-gray-200 p-3"
                             alt="cat"
                         />
@@ -93,11 +97,11 @@ function Home() {
                     </Link>
                     <Link
                         to="/products"
-                        className="md:col-span-3 col-span-6 rounded-md bg-gray-400 flex flex-col justify-center items-center p-5"
+                        className="md:col-span-3 col-span-6 rounded-md transition-all ease-in duration-200 bg-gray-400 flex flex-col justify-center items-center p-5"
                     >
                         <div className="rounded-full cursor-pointer hover:bg-gray-200 p-3">
                             <img
-                                src="https://getjoule.co/assets/images/home_icon/c71ce6c864c594ca8b92ab8e9e0c9705.png"
+                                src={sefaresh}
                                 className="w-20"
                                 alt="cat"
                             />
@@ -111,13 +115,37 @@ function Home() {
                         className="md:col-span-3 col-span-6 rounded-md bg-gray-400 flex flex-col justify-center items-center p-5"
                     >
                         <img
-                            src="https://getjoule.co/assets/images/home_icon/b812eecadbf26e303db2d45c2e7c2295.png"
+                            src={baste}
                             className="w-24 transition-all ease-in duration-200 rounded-full cursor-pointer hover:bg-gray-200 p-3"
                             alt="cat"
                         />
                         <h2 className="text-center">
                             بسته های هفتگی غذای رژیمی
                         </h2>
+                    </Link>
+                    <Link
+                        to="/products"
+                        className="md:col-span-3 col-span-6 rounded-md bg-gray-400 flex flex-col justify-center items-center p-5"
+                    >
+                        <div className="rounded-full cursor-pointer transition-all ease-in duration-200 hover:bg-gray-200 p-3">
+                            <img
+                                src={sefaresh}
+                                className="w-20"
+                                alt="cat"
+                            />
+                        </div>
+
+                        <h2 className="text-center">سوشی</h2>
+                    </Link>
+                    <Link
+                        to="/products?cat=vip غذا"
+                        className="md:col-span-3 col-span-6 rounded-md bg-yellow-600 flex flex-col justify-center items-center p-5"
+                    >
+                        <div className="rounded-full cursor-pointer transition-all ease-in duration-200 hover:bg-yellow-200 p-3">
+                            <div className="w-20 h-20 flex justify-center items-center font-bold text-2xl text-yellow-800">VIP</div>
+                        </div>
+
+                        <h2 className="text-center" dir="rtl">غذاهای VIP</h2>
                     </Link>
                 </div>
 

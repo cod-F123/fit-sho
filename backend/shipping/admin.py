@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import ShipmentDay , ShipmentOrder
+from rangefilter.filters import DateRangeFilter
 
 # Register your models here.
 
@@ -15,4 +16,4 @@ class ShipmentOrderAdmin(admin.ModelAdmin):
 @admin.register(ShipmentDay)
 class ShipmentDayAdmin(admin.ModelAdmin):
     list_display = ["status","date"]
-    list_filter = ["status"]
+    list_filter = ["status",["date",DateRangeFilter]]

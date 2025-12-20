@@ -4,7 +4,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import SaladItem from "../ui_components/SaladItem";
 import { CartContext } from "../contexts/CartContext";
 import { useNavigate } from "react-router-dom";
-import {AlertContext} from "../contexts/AlertContext"
+import { AlertContext } from "../contexts/AlertContext";
 
 function MakeSalad() {
     const [saladItemsList, setSaladItems] = useState([]);
@@ -15,10 +15,11 @@ function MakeSalad() {
     const { saladItems, clearSalad } = useContext(CartContext);
 
     const navigate = useNavigate();
-    const {setAlert} = useContext(AlertContext);
+    const { setAlert } = useContext(AlertContext);
 
     useEffect(() => {
         setIsLoading(true);
+
         api.get(`/shop/getSaladItems/?category=${categorySelected}`)
             .then((res) => {
                 setSaladItems(res.data.items);
@@ -49,9 +50,9 @@ function MakeSalad() {
                 .finally(() => {
                     setIsLoading(false);
                 });
-        }else{
+        } else {
             navigate("/accounts/login");
-            setAlert("ابتدا وارد حساب خود شوید")
+            setAlert("ابتدا وارد حساب خود شوید");
         }
     };
 
@@ -79,23 +80,29 @@ function MakeSalad() {
                         <h2 className="text-3xl my-5 w-full text-center font-bold">
                             سالاد خودتو بساز
                         </h2>
-                        <div className="flex gap-2 md:gap-4 justify-center scrollbar-hide cursor-all-scroll overflow-x-auto s py-2 ">
-                            {categories.map((category) => (
-                                <div
-                                    onClick={() => {
-                                        filterCategory(category.name);
-                                    }}
-                                    key={category.id}
-                                    className={`rounded-2xl cursor-pointer py-2 px-5 text-sm font-medium whitespace-nowrap hover:bg-gray-500 hover:text-black transition-all ${
-                                        categorySelected == category.name
-                                            ? "bg-gray-500 text-white"
-                                            : " bg-white"
-                                    }`}
-                                >
-                                    {category.name}
+                        <div className="grid grid-cols-12">
+                            <div className="col-span-12 overflow-x-auto scrollbar-hide">
+                                <div className="flex max-w-content gap-2 md:gap-4 justify-center  cursor-all-scroll s py-2 ">
+                                    {categories.map((category) => (
+                                        <div
+                                            onClick={() => {
+                                                filterCategory(category.name);
+                                            }}
+                                            key={category.id}
+                                            className={`rounded-2xl cursor-pointer py-2 px-5 text-sm font-medium whitespace-nowrap hover:bg-gray-500 hover:text-black transition-all ${
+                                                categorySelected ==
+                                                category.name
+                                                    ? "bg-gray-500 text-white"
+                                                    : " bg-white"
+                                            }`}
+                                        >
+                                            {category.name}
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
+                            </div>
                         </div>
+
                         <div className="grid grid-cols-12 gap-5 mt-5">
                             {saladItemsList.map((item) => {
                                 return <SaladItem key={item.id} item={item} />;

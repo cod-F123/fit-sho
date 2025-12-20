@@ -32,6 +32,8 @@ import ChangePassword from "./pages/ChangePassword";
 import ForgotePassword from "./pages/ForgotePassword";
 
 import MakeSalad from "./pages/MakeSalad";
+import MyTransactions from "./pages/MyTransactions";
+import AboutUs from "./pages/AboutUs";
 
 function App() {
     return (
@@ -43,8 +45,15 @@ function App() {
                             <Routes>
                                 <Route path="/" element={<AppLayout />}>
                                     <Route index element={<Home />} />
+                                    <Route
+                                        path="/about-us"
+                                        element={<AboutUs />}
+                                    />
                                     <Route path="/cart" element={<Cart />} />
-                                    <Route path="/makeSalad" element={<MakeSalad />} />
+                                    <Route
+                                        path="/makeSalad"
+                                        element={<MakeSalad />}
+                                    />
                                     <Route
                                         path="/contactUs"
                                         element={<ContactUs />}
@@ -76,7 +85,10 @@ function App() {
                                         element={<Register />}
                                     />
 
-                                    <Route path="/accounts/forgetPassword" element={<ForgotePassword />} />
+                                    <Route
+                                        path="/accounts/forgetPassword"
+                                        element={<ForgotePassword />}
+                                    />
 
                                     <Route element={<ProtectedRoute />}>
                                         <Route
@@ -116,6 +128,11 @@ function App() {
                                         <Route
                                             path="/accounts/orders/:id"
                                             element={<OrderDetail />}
+                                        />
+
+                                        <Route
+                                            path="/accounts/myTransactions"
+                                            element={<MyTransactions />}
                                         />
                                     </Route>
 

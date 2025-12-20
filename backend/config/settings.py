@@ -63,7 +63,8 @@ INSTALLED_APPS = [
     'corsheaders',
     
     # django filters
-    'django_filters'
+    'django_filters',
+    'rangefilter'
 ]
 
 MIDDLEWARE = [

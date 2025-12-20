@@ -9,7 +9,7 @@ function AccountSidebar() {
 
     return (
         <>
-            <div className="md:col-span-4 col-span-12 grid gird-cols-6 mt-10 md:mt-0">
+            <div className="md:col-span-4 max-h-content col-span-12 grid gird-cols-6 mt-10 md:mt-0">
                 <div className="col-span-6 max-h-content rounded-md bg-white p-3 md:p-5">
                     <div className="flex flex-row-reverse items-center justify-between">
                         <img

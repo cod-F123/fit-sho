@@ -11,4 +11,5 @@ urlpatterns = [
     path("startChargeWallet/", views.StartPayWalletTransaction.as_view()),
     path("WalletChargecallback/", views.CallbackPayWallet.as_view()),
     path("payWithWallet/", views.PayWithWallet.as_view()),
+    path("transactions/", views.TransactionsView.as_view()),
 ]

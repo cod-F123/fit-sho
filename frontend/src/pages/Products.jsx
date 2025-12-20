@@ -7,11 +7,10 @@ function Products() {
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [categorySelected, setCategorySelected] = useState("");
-
+    const [categorySelected, setCategorySelected] = useState(null);
 
     useEffect(() => {
-        api.get("/shop/getProducts/")
+        api.get(`/shop/getProducts/?category=${categorySelected}`)
             .then((res) => {
                 setCategories(res.data.categories);
                 setProducts(res.data.products);
@@ -24,18 +23,12 @@ function Products() {
                 setIsLoading(false);
 
             });
-    }, []);
+    }, [categorySelected]);
 
     const filterCategory = (cName) => {
-        setIsLoading(true)
         setCategorySelected(cName);
-        api.get(`/shop/getProducts/?category=${cName}`).then((res) => {
-            setProducts(res.data.products);
-            setIsLoading(false);
-        }).catch((error)=>{
-            setIsLoading(false);
-        })
     };
+
 
     return (
         <>
@@ -53,8 +46,8 @@ function Products() {
                             غذاهای روزانه
                         </h1>
                         <div className="grid grid-cols-12 relative gap-4 my-4">
-                            <div className="col-span-12">
-                                <div className="flex gap-2 md:gap-4 justify-center scrollbar-hide cursor-all-scroll overflow-x-auto s py-2 ">
+                            <div className="col-span-12  overflow-x-auto scrollbar-hide">
+                                <div className="flex max-w-content gap-2 md:gap-4 justify-center  cursor-all-scroll s py-2 ">
                                     {categories.map((category) => (
                                         <div
                                             onClick={() => {

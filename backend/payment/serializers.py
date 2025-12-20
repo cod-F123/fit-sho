@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import (Order, PackageOrderItem, PackageOrderItemExtra, ProductOrderItem, ProductOrderItemExtra, SaladOrder, SaladItemOrderItem)
+from .models import (Transaction ,Order, PackageOrderItem, PackageOrderItemExtra, ProductOrderItem, ProductOrderItemExtra, SaladOrder, SaladItemOrderItem)
 from shop.serializers import (ExtraOptionPackageSerializer , PackageSerializer , MealPriceWeekSerializer , ExtraOptionProductSerializer, ProductSerializer,SaladItemSerializer)
 
 class CartSerializer(serializers.Serializer):
@@ -83,5 +83,13 @@ class TransactionAmountSerializer(serializers.Serializer):
     amount = serializers.IntegerField()
     
     
+class TransactionSerializer(serializers.ModelSerializer):
+    order = Orderserializer(read_only=True)
+    create_at = serializers.DateTimeField(format="%Y/%m/%d %H:%M:%S")
+    payed_at = serializers.DateTimeField(format="%Y/%m/%d %H:%M:%S")
     
+    class Meta:
+        model = Transaction
+        fields = ["order","amount","status","create_at","payed_at","ref_id","id"]
+        
     
