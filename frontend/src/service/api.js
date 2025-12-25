@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const BASEURL = "http://127.0.0.1:8000";
+export const BASEURL = "https://api.fit-bama.ir";
 // export const BASEURL = "https://testshop.pythonanywhere.com";
 
 const api = axios.create({

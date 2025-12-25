@@ -57,14 +57,14 @@ function PackageDetail() {
                 setSelectedWeek(
                     res.data.meals &&
                         res.data.meals[0] &&
-                        res.data.meals[0].pricing_week
+                        res.data.meals[0].pricing_week[0]
                         ? res.data.meals[0].pricing_week[0].id
                         : null
                 );
                 setPrice(
                     res.data.meals &&
                         res.data.meals[0] &&
-                        res.data.meals[0].pricing_week
+                        res.data.meals[0].pricing_week[0]
                         ? res.data.meals[0].pricing_week[0].price
                         : 0
                 );
@@ -72,6 +72,7 @@ function PackageDetail() {
                 setIsLoading(false);
             })
             .catch((err) => {
+                console.log(err)
                 navigate("/404");
             });
     }, []);
@@ -229,8 +230,8 @@ function PackageDetail() {
                             className="grid grid-cols-12 md:gap-5 place-content-between"
                             dir="rtl"
                         >
-                            <div className="md:col-span-7 mb-5 col-span-12 grid grid-cols-6">
-                                <div className="p-2 md:p-5 rounded-md bg-white col-span-6">
+                            <div className="md:col-span-7 mb-5 max-h-content col-span-12 grid grid-cols-6">
+                                <div className="p-2 md:p-5 max-h-content rounded-md bg-white col-span-6">
                                     <div className="">
                                         <img
                                             src={`${BASEURL}${packageData.image}`}

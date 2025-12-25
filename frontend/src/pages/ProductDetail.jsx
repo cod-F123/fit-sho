@@ -145,8 +145,8 @@ function ProductDetail() {
                             className="grid grid-cols-12 md:gap-5 place-content-between"
                             dir="rtl"
                         >
-                            <div className="md:col-span-7 mb-5 col-span-12 grid grid-cols-6">
-                                <div className="p-2 md:p-5 rounded-md bg-white col-span-6">
+                            <div className="md:col-span-7 mb-5 max-h-content col-span-12 grid grid-cols-6">
+                                <div className="p-2 md:p-5 max-h-content rounded-md bg-white col-span-6">
                                     <div className="">
                                         <img
                                             src={
@@ -384,7 +384,7 @@ function ProductDetail() {
                                     );
                                 })}
 
-                                <div className="flex mt-5 flex-row justify-between p-2 items-center rounded-md bg-white">
+                                <div className="flex flex-row justify-between p-2 items-center rounded-md bg-white">
                                     <div className="">تعداد</div>
                                     <div className="flex flex-row-reverse justify-between gap-3 items-center">
                                         <button onClick={()=>{qty > 1 ? setQty(qty-1) : null}} className="bg-gray-300 cursor-pointer text-black p-2 rounded-md">
